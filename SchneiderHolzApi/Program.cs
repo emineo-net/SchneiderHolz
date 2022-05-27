@@ -14,8 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
     }
     else
     {
-        services.AddDbContext<DataContext>();
-       //services.AddDbContext<DataContext, SqliteDataContext>();
+        //services.AddDbContext<DataContext>();
+       services.AddDbContext<DataContext, SqliteDataContext>();
     }
     services.AddCors();
     services.AddControllers();

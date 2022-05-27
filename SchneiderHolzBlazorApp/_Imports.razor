@@ -1,4 +1,6 @@
-﻿@using System.Net.Http
+﻿@inherits MyComponentBase
+
+@using System.Net.Http
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Forms
@@ -7,4 +9,14 @@
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.JSInterop
 @using SchneiderHolzBlazorApp
+@using SchneiderHolzBlazorApp.Pages
 @using SchneiderHolzBlazorApp.Shared
+
+@using SchneiderHolzBlazorApp.Components
+@using Blazored.FluentValidation
+@using Blazored.Modal
+@using Blazored.Modal.Services
+@using Microsoft.Extensions.Localization
+@using System.Globalization
+@using BlazorTable
+@using BlazorTable.Components
