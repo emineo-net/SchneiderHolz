@@ -24,8 +24,4 @@
     <ProjectReference Include="..\Localization\Localization.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>

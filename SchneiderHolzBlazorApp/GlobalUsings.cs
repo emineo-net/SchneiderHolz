@@ -7,7 +7,8 @@ global using Microsoft.AspNetCore.Components;
 global using BlazorTable;
 global using SchneiderHolzBlazorApp.Shared;
 global using Microsoft.EntityFrameworkCore;
-
+global using SchneiderHolzBlazorApp.Models;
+global using Blazored.Modal;
 
 namespace SchneiderHolzBlazorApp;
 

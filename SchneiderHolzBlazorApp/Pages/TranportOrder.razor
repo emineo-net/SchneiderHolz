@@ -1,5 +1,124 @@
-﻿<h3>TranportOrder</h3>
+﻿@page "/tranportorder"
+@using SharedModels.ConstValues
+@implements IAsyncDisposable
 
-@code {
+<h3>WebsitesPage</h3>
+ <button class="btn btn-primary" @onclick="GetNew">GetNew</button>
+ <br />
+  <button class="btn btn-primary" @onclick="Save">Save</button>
+  <br />
+  <button class="btn btn-sm btn-danger" title="Toggle Edit Mode" @onclick="@((x) => ToggleEdit())">Toggle Edit Mode</button>
+<br />
+<br />
 
+@if(data.Count > 0)
+{
+<Table TableItem="SharedModels.Models.WebSite" Items="data" ColumnReorder="true" class="@CssClassTable" @ref="Table"
+       ShowSearchBar="true" RowClickAction="@(x => { SelectedItem = x; CssSelected = ""; StateHasChanged();})" 
+	   SelectedItems="SelectedItems" SelectionType="SelectionType.Single" Header="Header">
+
+	
+		<ToolBar>
+			pling
+			<button type="button" class="btn btn-success btn-sm" @onclick="@(async () => await ShowModalEdit(null))">
+				<i class="fas fa-plus"></i> Loc["ClientAddClient"]
+			</button>
+			}
+		</ToolBar>
+		<ColumnActions TItem="SharedModels.Models.WebSite" OnDeleteClick="async c => await Delete(c)" OnEditClick="async c => await ShowModalEdit(c)"/>
+	
+	<Column TableItem="SharedModels.Models.WebSite" Title="Done" Field="@(x => x.Done)" Filterable="true">
+		 <Template>
+            @context.Done.ToString()
+        </Template>
+		 <EditTemplate>
+
+			@* requires blazor-EditContext*@
+			  @*<EditComponent Label="Check" Value="@context.Done.ToString()"/>*@
+            <input type="checkbox" @bind="@context.Done" class="form-check-input" />
+        </EditTemplate>
+	</Column>
+	<Column TableItem="SharedModels.Models.WebSite" Title="Details1" Field="@(x => x.Details1)">
+		 <Template>
+			 @if(context.Details1.ToString().StartsWith("http"))
+			 {
+				 <a href="@context.Details1.ToString().Trim().Replace("//bad","//www.bad").Split('|')[0]" target="_blank">@context.Details1.ToString().Replace("https://www.","").Replace("http://www.","").Replace("https://","").Replace("http://","").Split('|')[0]</a>
+               }
+			 else
+			{
+				@context.Details1.ToString()
+			}
+        </Template>
+		 <EditTemplate>
+            <input type="text" @bind-value="@context.Details1" class="form-control form-control-sm" style="width:500px;"/>
+        </EditTemplate>
+	</Column>
+	<Column TableItem="SharedModels.Models.WebSite" Title="Id" Field="@(x => x.Id)"/>
+	<Column TableItem="SharedModels.Models.WebSite" Title="Rating" Field="@(x => x.Rating)">
+		 <EditTemplate>
+            <input type="number" @bind-value="@context.Rating" class="form-control form-control-sm" />
+        </EditTemplate>
+	</Column>
+	<Column TableItem="SharedModels.Models.WebSite" Title="Created" Field="@(x => x.Created)">
+		 <EditTemplate>
+            <input type="date" @bind-value="@context.Created" class="form-control form-control-sm" />
+        </EditTemplate>
+	</Column>
+	
+	<Column TableItem="SharedModels.Models.WebSite" Title="Skip" Field="@(x => x.Skip)">
+		<Template>
+            @context.Skip.ToString()
+        </Template>
+		 <EditTemplate>
+            <input type="checkbox" @bind-value="@context.Skip" class="form-check-input" />
+        </EditTemplate>
+	</Column>
+	<Column TableItem="SharedModels.Models.WebSite" Title="Visited" Field="@(x => x.Visited)">
+		 <EditTemplate>
+            <input type="date" @bind-value="@context.Visited" class="form-control form-control-sm" />
+        </EditTemplate>
+	</Column>
+	<Column TableItem="SharedModels.Models.WebSite" Title="FilenameSmall" Field="@(x => x.FilenameSmall)">
+		 <EditTemplate>
+            <input type="text" @bind-value="@context.FilenameSmall" class="form-control form-control-sm" />
+        </EditTemplate>
+	</Column>
+	
+
+
+	<Column ColumnAttributes="@GetAttributes(WebTrackerColumns.WebTrackerCol01)" ColumnVisible='GetColumnVisible(WebTrackerColumns.WebTrackerCol01)'
+        TableItem="SharedModels.Models.WebSite" Title="Col1" Field="@(x => x.WebTrackerCol01)" Filterable="true"
+            ColumnSelectionChanged="@(e => ColumnSelection(e, WebTrackerColumns.WebTrackerCol01, "some string"))"
+            RenderType="@GetRenderType(WebTrackerColumns.WebTrackerCol01)" ColumnSelected="SelectedItem.Selected">
+            <Template>
+                @context.WebTrackerCol01.ToString()
+            </Template>
+            <EditTemplate>
+                @{
+                    var att = ColAttributes.FirstOrDefault(i => i.ProjectId == SelectedWebsiteProjectId && i.ColumnId == (int)Enum.Parse(typeof(WebTrackerColumns), WebTrackerColumns.WebTrackerCol01.ToString()));
+                }
+                <EditComponent Label="Col1" OnTextChange="@(e => InputChanged(e, att, context.Id))" Value="@context.WebTrackerCol01.ToString()" TypeId="@att.InputTyp" />
+            </EditTemplate>
+        </Column>
+
+		<Column ColumnAttributes="@GetAttributes(WebTrackerColumns.WebTrackerCol02)" ColumnVisible='GetColumnVisible(WebTrackerColumns.WebTrackerCol02)'
+        TableItem="SharedModels.Models.WebSite" Title="Col2" Field="@(x => x.WebTrackerCol02)" Filterable="true"
+            ColumnSelectionChanged="@(e => ColumnSelection(e, WebTrackerColumns.WebTrackerCol02, "some string"))"
+            RenderType="@GetRenderType(WebTrackerColumns.WebTrackerCol02)" ColumnSelected="SelectedItem.Selected">
+            <Template>
+                @context.WebTrackerCol02.ToString()
+            </Template>
+            <EditTemplate>
+                @{
+                    var att = ColAttributes.FirstOrDefault(i => i.ProjectId == SelectedWebsiteProjectId && i.ColumnId == (int)Enum.Parse(typeof(WebTrackerColumns), WebTrackerColumns.WebTrackerCol02.ToString()));
+                }
+                <EditComponent Label="Col2" OnTextChange="@(e => InputChanged(e, att, context.Id))" Value="@context.WebTrackerCol02.ToString()" TypeId="@att.InputTyp" />
+            </EditTemplate>
+        </Column>
+
+
+
+
+
+</Table>
 }
