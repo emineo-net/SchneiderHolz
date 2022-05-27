@@ -1,10 +1,8 @@
 ﻿using Blazored.FluentValidation;
 using Blazored.Modal;
 using Blazored.Modal.Services;
-using Localization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.Extensions.Localization;
 using System.Globalization;
 
 namespace SchneiderHolzBlazorApp.Pages;

@@ -1,11 +1,14 @@
-﻿namespace SchneiderHolzBlazorApp.Pages;
+﻿namespace SchneiderHolzBlazorApp.Pages.TransportOrderDir;
 
-public partial class TranportOrder
+public partial class TranportOrderPage
 {
     [Inject] private HttpClient Http { get; set; }
-
     private List<TransportOrder> data = new();
-   
+
+    public TransportOrder SelectedItem = new();
+    public List<TransportOrder> SelectedItems = new();
+    public ITable<TransportOrder> Table;
+
     int selectedWebsiteProjectId;
     int SelectedWebsiteProjectId
     {
@@ -13,7 +16,7 @@ public partial class TranportOrder
         set
         {
             selectedWebsiteProjectId = value;
-           
+
             // SelectSite(true);
         }
     }
@@ -22,7 +25,7 @@ public partial class TranportOrder
     protected override async Task OnInitializedAsync()
     {
 
-        data = await Http.GetFromJsonAsync < List<TransportOrder>>($"{Http.BaseAddress}/api/TransportOrders");
+        data = await Http.GetFromJsonAsync<List<TransportOrder>>($"{Http.BaseAddress}/TransportOrders");
 
 
     }
@@ -71,18 +74,20 @@ public partial class TranportOrder
     }
 
 
-   
+
     private void ToggleEdit()
     {
         Table.ToggleEditMode();
     }
 
-    public async ValueTask DisposeAsync()
+    public async Task Save()
     {
-        // await SomeTyp.CloseAsync();
+        foreach (var item in data)
+        {
+            await Http.PutAsJsonAsync($"{Http.BaseAddress}/TransportOrders/" + Convert.ToInt32(item.Id), item);
+        }
     }
 
-   
 
 
 

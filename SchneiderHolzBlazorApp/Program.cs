@@ -1,3 +1,4 @@
+using Localization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
@@ -25,6 +26,12 @@ namespace SchneiderHolzBlazorApp
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
             builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
+            builder.Services.AddScoped(x =>
+            {
+                return new HttpClient { BaseAddress = new Uri("http://localhost:4000/api") };
+            });
+            builder.Services.AddScoped<ILocalizer, Localizer>();
+            builder.Services.AddBlazorTable();
 
             var app = builder.Build();
 

@@ -2,7 +2,6 @@ using System.Globalization;
 using System.Threading.Tasks;
 using Localization;
 using Microsoft.AspNetCore.Components;
-using Localization;
 using SchneiderHolzBlazorApp.Models;
 
 namespace SchneiderHolzBlazorApp.Components;
