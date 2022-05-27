@@ -1,0 +1,43 @@
+<CascadingValue Value="this">
+	<ul class="nav nav-tabs mb-2" id="pills-tab" role="tablist">
+
+		@foreach (var tabPage in Pages)
+		{
+			<li class="nav-item" role="presentation">
+				<button class="@GetButtonClass(tabPage)" id="pills-article-tab" data-bs-toggle="pill" data-bs-target="#pills-article" type="button" role="tab" aria-controls="pills-article"
+				        @onclick=@(() => ActivatePage(tabPage)) aria-selected="true">
+					@tabPage.Text
+				</button>
+			</li>
+		}
+	</ul>
+	@ChildContent
+</CascadingValue>
+
+@code {
+
+	[Parameter]
+	public RenderFragment ChildContent { get; set; }
+
+	public TabPage ActivePage { get; set; }
+	List<TabPage> Pages = new();
+
+	internal void AddPage(TabPage tabPage)
+	{
+		Pages.Add(tabPage);
+		if (Pages.Count == 1)
+			ActivePage = tabPage;
+		StateHasChanged();
+	}
+
+	string GetButtonClass(TabPage page)
+	{
+		return page == ActivePage ? "nav-link active" : "nav-link";
+	}
+
+	void ActivatePage(TabPage page)
+	{
+		ActivePage = page;
+	}
+
+}

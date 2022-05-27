@@ -1,0 +1,46 @@
+﻿@typeparam T
+@using System.Linq.Expressions
+@inherits InputBase<bool>
+
+<div class="@(InputContainerCssClass != null ? InputContainerCssClass : "form-check me-3")">
+	@if (!string.IsNullOrWhiteSpace(Label))
+	{
+		<LabelLocalizeable CssClass="@(LabelCssClass != null ? LabelCssClass : "form-check-label")" TranslateKey="@Label"/>
+	}
+	<InputCheckbox class="@(InputCssClass != null ? InputCssClass : "form-check-input")" @attributes="AdditionalAttributes" id="@Label" @bind-Value="CurrentValue"/>
+	@if(ValidationFor is not null) {
+		<ValidationMessage For="@ValidationFor"/>
+	}
+</div>
+
+@code {
+
+	[Parameter]
+	public string Label { get; set; }
+
+	[Parameter]
+	public Expression<Func<T>> ValidationFor { get; set; } = null;
+
+	[Parameter]
+	public string LabelCssClass { get; set; }
+
+	[Parameter]
+	public string InputCssClass { get; set; }
+
+	[Parameter]
+	public string InputContainerCssClass { get; set; }
+
+	 protected override async Task OnInitializedAsync()
+    {
+
+
+    }
+
+	protected override bool TryParseValueFromString(string value, out bool result, out string validationErrorMessage)
+	{
+		result = CurrentValue;
+		validationErrorMessage = null;
+		return true;
+	}
+
+}

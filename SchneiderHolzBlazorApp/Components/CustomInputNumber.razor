@@ -1,0 +1,34 @@
+﻿@typeparam T
+@using System.Linq.Expressions
+@inherits InputBase<decimal>
+
+@if (!string.IsNullOrWhiteSpace(Label))
+{
+	<LabelLocalizeable CssClass="col col-form-label" TranslateKey="@Label"/>
+}
+<div class="col">
+	<input @bind="CurrentValue" @attributes="AdditionalAttributes" class="form-control form-control-sm @AdditionalCssClass" id="@Label" type="number"/>
+	<ValidationMessage For="@ValidationFor"/>
+</div>
+
+@code {
+	[Parameter]
+	public string Label { get; set; }
+
+	[Parameter]
+	public string Format { get; set; }
+
+	[Parameter]
+	public string AdditionalCssClass { get; set; }
+
+	[Parameter]
+	public Expression<Func<T>> ValidationFor { get; set; }
+
+	protected override bool TryParseValueFromString(string value, out decimal result, out string validationErrorMessage)
+	{
+		result = CurrentValue;
+		validationErrorMessage = "";
+		return true;
+	}
+
+}

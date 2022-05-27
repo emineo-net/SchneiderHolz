@@ -1,0 +1,43 @@
+﻿@typeparam T
+@using System.Linq.Expressions
+@inherits InputBase<int>
+
+@if (!string.IsNullOrWhiteSpace(Label))
+{
+	<LabelLocalizeable CssClass="col col-form-label" TranslateKey="@Label"/>
+}
+<div class="col">
+	<input @bind="CurrentValue" @attributes="AdditionalAttributes" class="form-control form-control-sm @AdditionalCssClass" id="@Label" 
+	 step="@Step"  min="@Min" max="@Max" type="range"/>
+	<ValidationMessage For="@ValidationFor"/>
+</div>
+
+@code {
+
+	[Parameter]
+	public double Step { get; set; }
+	[Parameter]
+	public double Min { get; set; }
+	[Parameter]
+	public double Max { get; set; }
+
+	[Parameter]
+	public string Label { get; set; }
+
+	[Parameter]
+	public string Format { get; set; }
+
+	[Parameter]
+	public string AdditionalCssClass { get; set; }
+
+	[Parameter]
+	public Expression<Func<T>> ValidationFor { get; set; }
+
+	protected override bool TryParseValueFromString(string value, out int result, out string validationErrorMessage)
+	{
+		result = CurrentValue;
+		validationErrorMessage = "";
+		return true;
+	}
+
+}

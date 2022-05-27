@@ -1,0 +1,50 @@
+﻿@using System.Globalization
+<input @bind="DecimalValue" class="form-control form-control-sm text-end" id="@ControlId" type="text"/>
+
+@code
+{
+	[Parameter]
+	public string ControlId { get; set; }
+
+	[Parameter]
+	public decimal CurrentValue { get; set; }
+
+	[Parameter]
+	public EventCallback<decimal> ValueChanged { get; set; }
+
+	[Parameter]
+	public string Format { get; set; } = "N2";
+
+	private string decimalValue { get; set; }
+	private NumberStyles style = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
+	private CultureInfo culture = CultureInfo.CurrentCulture;
+	private bool init = true;
+
+	private string DecimalValue
+	{
+		get => decimalValue;
+		set
+		{
+			if (decimal.TryParse(value.Replace(".", culture.NumberFormat.PercentDecimalSeparator).Replace(",", culture.NumberFormat.PercentDecimalSeparator), style, culture, out var temp))
+			{
+				CurrentValue = temp;
+				if (init)
+				{
+					init = false;
+					decimalValue = temp.ToString(Format);
+				}
+				else
+				{
+					decimalValue = temp.ToString(Format).TrimEnd('0').TrimEnd(',').TrimEnd('.');
+					ValueChanged.InvokeAsync(temp).GetAwaiter().GetResult();
+				}
+			}
+		}
+	}
+
+	protected override void OnParametersSet()
+	{
+		init = true;
+		DecimalValue = CurrentValue.ToString(Format);
+	}
+}

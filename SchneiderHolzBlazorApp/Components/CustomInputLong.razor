@@ -1,0 +1,40 @@
+﻿@typeparam T
+@using System.Linq.Expressions
+@inherits InputBase<long>
+
+@if (!string.IsNullOrWhiteSpace(Label))
+{
+	<LabelLocalizeable CssClass="@(LabelCssClass != null ? LabelCssClass : "col col-form-label")" TranslateKey="@Label"/>
+}
+<div class="@(InputContainerCssClass != null ? InputContainerCssClass : "col")">
+	<input @bind="CurrentValue" @attributes="AdditionalAttributes" class="@(InputCssClass != null ? InputCssClass : "form-control form-control-sm")" id="@Label" type="number"/>
+	<ValidationMessage For="@ValidationFor"/>
+</div>
+
+@code {
+	private string stringValue;
+	private T lastParsedValue;
+
+	[Parameter]
+	public string Label { get; set; }
+
+	[Parameter]
+	public string LabelCssClass { get; set; }
+
+	[Parameter]
+	public string InputCssClass { get; set; }
+
+	[Parameter]
+	public string InputContainerCssClass { get; set; }
+
+	[Parameter]
+	public Expression<Func<T>> ValidationFor { get; set; }
+
+	protected override bool TryParseValueFromString(string value, out long result, out string validationErrorMessage)
+	{
+		result = CurrentValue;
+		validationErrorMessage = "";
+		return true;
+	}
+
+}

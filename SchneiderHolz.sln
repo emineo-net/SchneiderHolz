@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchneiderHolzBlazorApp", "S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorTable", "BlazorTable\BlazorTable.csproj", "{0FCAEE4A-DA1F-4C6D-A6EC-A906FC5B83A8}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Localization", "Localization\Localization.csproj", "{776A2D1A-C4AC-4EAD-9239-93BA37840A99}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{0FCAEE4A-DA1F-4C6D-A6EC-A906FC5B83A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FCAEE4A-DA1F-4C6D-A6EC-A906FC5B83A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FCAEE4A-DA1F-4C6D-A6EC-A906FC5B83A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{776A2D1A-C4AC-4EAD-9239-93BA37840A99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{776A2D1A-C4AC-4EAD-9239-93BA37840A99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{776A2D1A-C4AC-4EAD-9239-93BA37840A99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{776A2D1A-C4AC-4EAD-9239-93BA37840A99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

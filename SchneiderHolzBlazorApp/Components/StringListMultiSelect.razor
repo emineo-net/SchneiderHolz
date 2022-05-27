@@ -1,0 +1,76 @@
+﻿@if(_isEdit == false)
+{
+    <div class="form-control form-control-sm" @onclick="OnEditClick">@string.Join(", ",List.Where(x => _selectedValues.Contains(x.Value)).Select(x => x.Text))</div>
+}
+else
+{
+    <div class="card">
+        <div class="card-body p-0">
+            @foreach(var element in List)
+            {
+                <div class="btn btn-sm m-1 @(_editSelectedValues.Contains(element.Value) ? "btn-primary":"btn-outline-dark")" @onclick="() => OnElementClick(element.Value)">
+                    @element.Text
+                </div>
+            }
+        </div>
+        <div class="card-footer text-end p-1">
+            <div class="btn btn-sm btn-success" @onclick="OnSaveEdit">
+                <i class="fas fa-check"></i>
+            </div>
+            <div class="btn btn-sm btn-danger" @onclick="OnCancelEdit">
+                <i class="fas fa-times"></i>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private bool _isEdit = false;
+
+    [Parameter] public string Value { get; set; }
+    [Parameter] public List<SelectElement> List { get; set; } = new List<SelectElement>();
+    [Parameter] public EventCallback<string> OnChange{ get; set; }
+
+    private List<string> _selectedValues;
+    private List<string> _editSelectedValues;
+
+    public class SelectElement
+    {
+        public string Value { get; set; }
+        public string Text { get; set; }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _selectedValues = Value.Split(',').ToList();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    async Task OnEditClick()
+    {
+        _editSelectedValues = new List<string>(_selectedValues);
+        _isEdit = true;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    async Task OnSaveEdit()
+    {
+        _selectedValues = new List<string>(_editSelectedValues);
+        _isEdit = false;
+        if (OnChange.HasDelegate)
+            await OnChange.InvokeAsync(string.Join(",",_selectedValues));
+        await InvokeAsync(StateHasChanged);
+    }
+
+    async Task OnCancelEdit()
+    {
+        _isEdit = false;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    async Task OnElementClick(string value)
+    {
+        if (_editSelectedValues.Remove(value) == false)
+            _editSelectedValues.Add(value);
+    }
+}

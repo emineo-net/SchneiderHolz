@@ -1,0 +1,51 @@
+﻿@typeparam T
+@using System.Linq.Expressions
+@inherits InputBase<double>
+
+@if (!string.IsNullOrWhiteSpace(Label))
+{
+	<LabelLocalizeable CssClass="col col-form-label" TranslateKey="@Label"/>
+}
+<div class="col">
+	<input @bind="CurrentValue" @attributes="AdditionalAttributes" class="form-control form-control-sm @AdditionalCssClass"
+	 step="@Step"  min="@Min" max="@(Max.Length > 3 ? Max.Substring(0,3) : Max)" title="@ToolTip" type="range"/>
+	<ValidationMessage For="@ValidationFor"/>
+</div>
+
+@code {
+
+	[Parameter]
+	public string ToolTip { get; set; }
+	[Parameter]
+	public string Step { get; set; }
+	[Parameter]
+	public string Min { get; set; }
+	[Parameter]
+	public string Max { get; set; }
+
+	[Parameter]
+	public string Label { get; set; }
+
+	[Parameter]
+	public string Format { get; set; }
+
+	[Parameter]
+	public string AdditionalCssClass { get; set; }
+
+	[Parameter]
+	public Expression<Func<T>> ValidationFor { get; set; }
+
+
+	protected override void OnParametersSet()
+	{
+	}
+
+
+	protected override bool TryParseValueFromString(string value, out double result, out string validationErrorMessage)
+	{
+		result = CurrentValue;
+		validationErrorMessage = "";
+		return true;
+	}
+
+}

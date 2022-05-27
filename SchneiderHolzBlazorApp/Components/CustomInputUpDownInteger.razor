@@ -1,0 +1,64 @@
+﻿@typeparam T
+@using System.Linq.Expressions
+@inherits InputBase<int>
+
+
+<div class="@(InputContainerCssClass != null ? InputContainerCssClass : "col")">
+	<div class="input-group mt-3">
+		<button class="btn btn-outline-primary btn-sm"
+				type="button"
+				@onclick="@(() => Up())">
+			<i class="fas fa-plus"></i>
+		</button>
+		@if (!string.IsNullOrWhiteSpace(Label))
+		{
+			<LabelLocalizeable CssClass="@(LabelCssClass != null ? LabelCssClass : "col col-form-label text-center border")" TranslateKey="@Label" />
+		}
+		<input @bind="CurrentValue" @attributes="AdditionalAttributes" class="@(InputCssClass != null ? InputCssClass : "d-none")" id="@Label" type="number" />
+		<button class="btn btn-outline-primary btn-sm"
+				type="button"
+				@onclick="@(() => Down())">
+			<i class="fas fa-minus"></i>
+		</button>
+	</div>
+
+
+	<ValidationMessage For="@ValidationFor" />
+</div>
+
+@code {
+	private string stringValue;
+	private T lastParsedValue;
+
+	[Parameter]
+	public string Label { get; set; }
+
+	[Parameter]
+	public string LabelCssClass { get; set; }
+
+	[Parameter]
+	public string InputCssClass { get; set; }
+
+	[Parameter]
+	public string InputContainerCssClass { get; set; }
+
+	[Parameter]
+	public Expression<Func<T>> ValidationFor { get; set; }
+
+	protected override bool TryParseValueFromString(string value, out int result, out string validationErrorMessage)
+	{
+		result = CurrentValue;
+		validationErrorMessage = "";
+		return true;
+	}
+
+	private async Task Up()
+	{
+		CurrentValue++;
+	}
+	private async Task Down()
+	{
+		CurrentValue--;
+	}
+
+}

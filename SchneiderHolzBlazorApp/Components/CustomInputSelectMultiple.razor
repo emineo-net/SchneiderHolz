@@ -1,0 +1,57 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+<div class="dropdown">
+	<button class="btn btn-light btn-sm dropdown-toggle form-control" type="button" id="@ControlId" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" title="@Buttontext">
+		@Buttontext
+	</button>
+	<ul class="dropdown-menu" aria-labelledby="@ControlId">
+
+		@foreach (var item in Items)
+		{
+			<li>
+				<span class="form-check dropdown-item ms-3">
+					<input class="form-check-input" type="checkbox" value="@item.Value" id="@ControlId,@item.Value" checked="@item.Selected" @onchange="@(e => CheckboxChanged(e, item.Value))">
+					<label class="form-check-label" for="@ControlId,@item.Value">@item.Text</label>
+				</span>
+			</li>
+		}
+	</ul>
+</div>
+
+
+@code
+{
+	[Parameter]
+	public string ControlId { get; set; } = null!;
+
+	[Parameter]
+	public MultiSelectList Items { get; set; } = null!;
+
+	[Parameter]
+	public EventCallback<MultiSelectList> OnCheckChange { get; set; }
+
+	private string Buttontext = "";
+
+	private async Task CheckboxChanged(ChangeEventArgs e, string key)
+	{
+		var i = Items.FirstOrDefault(i => i.Value == key);
+		if (i != null)
+		{
+			i.Selected = (bool) e.Value;
+			await OnCheckChange.InvokeAsync(Items);
+		}
+		Buttontext = string.Join(",", Items.Where(i => i.Selected).Select(n => n.Text).ToList());
+	}
+
+	protected override async Task OnParametersSetAsync()
+	{
+		Buttontext = string.Join(",", Items.Where(i => i.Selected).Select(n => n.Text).ToList());
+
+		if (Buttontext == "")
+		{
+			Buttontext = "Auswahl";
+		}
+	}
+
+
+
+}

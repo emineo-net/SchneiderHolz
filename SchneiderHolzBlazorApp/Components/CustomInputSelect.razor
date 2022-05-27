@@ -1,0 +1,103 @@
+﻿@typeparam T
+@using System.Linq.Expressions
+@using System.Globalization
+@inherits InputBase<T>
+@if (!string.IsNullOrWhiteSpace(Label))
+{
+	<LabelLocalizeable CssClass="col col-form-label" TranslateKey="@Label"/>
+}
+<div class="col">
+	<select class="form-select form-select-sm @CssClass" @attributes="AdditionalAttributes" id="@Label" @bind="CurrentValueAsString">
+		@if (ShowDefaultOption)
+		{
+			<option value="0">#PleaseSelect</option>
+		}
+		@ChildContent
+	</select>
+	@if(ValidationFor != null) 
+	{
+		<ValidationMessage For="@ValidationFor"/>
+	}
+</div>
+
+@code {
+
+	[Parameter]
+	public string Label { get; set; }
+
+	[Parameter]
+	public Expression<Func<T>> ValidationFor { get; set; } = null;
+
+	[Parameter]
+	public RenderFragment ChildContent { get; set; }
+
+	[Parameter]
+	public bool ShowDefaultOption { get; set; } = true;
+
+	protected override bool TryParseValueFromString(string value, out T result, out string validationErrorMessage)
+	{
+		if (typeof(T) == typeof(string))
+		{
+			result = (T) (object) value;
+			validationErrorMessage = null;
+			return true;
+		}
+		if (typeof(T) == typeof(int))
+		{
+			int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsedValue);
+			result = (T) (object) parsedValue;
+			validationErrorMessage = null;
+			return true;
+		}
+		if (typeof(T) == typeof(int?))
+		{
+			int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsedValue);
+			result = (T) (object) parsedValue;
+			validationErrorMessage = null;
+			return true;
+		}
+		if (typeof(T) == typeof(Guid))
+		{
+			Guid.TryParse(value, out var parsedValue);
+			result = (T) (object) parsedValue;
+			validationErrorMessage = null;
+			return true;
+		}
+		if (typeof(T) == typeof(Guid?))
+		{
+			Guid.TryParse(value, out var parsedValue);
+			result = (T) (object) parsedValue;
+			validationErrorMessage = null;
+			return true;
+		}
+		if (typeof(T).IsEnum)
+		{
+			try
+			{
+				result = (T) Enum.Parse(typeof(T), value);
+				validationErrorMessage = null;
+				return true;
+			}
+			catch (ArgumentException)
+			{
+				result = default;
+				validationErrorMessage = $"The {FieldIdentifier.FieldName} field is not valid.";
+				return false;
+			}
+		}
+		try
+		{
+			result = (T) Enum.Parse(typeof(T), value);
+			validationErrorMessage = null;
+			return true;
+		}
+		catch (ArgumentException)
+		{
+			result = default;
+			validationErrorMessage = null;
+			return true;
+		}
+		throw new InvalidOperationException($"{GetType()} does not support the type '{typeof(T)}'.");
+	}
+
+}
