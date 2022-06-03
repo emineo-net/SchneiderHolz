@@ -96,6 +96,6 @@ public class DataContext : DbContext
 
     private void OnModelCreatingPartial(ModelBuilder modelBuilder)
     {
-        throw new NotImplementedException();
+
     }
 }
