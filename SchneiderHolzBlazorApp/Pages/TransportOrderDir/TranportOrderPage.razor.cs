@@ -2,30 +2,20 @@
 
 public partial class TranportOrderPage
 {
-    [Inject] private HttpClient Http { get; set; }
+    [Inject] private HttpClient httpClient { get; set; } = new();
     private List<TransportOrder> data = new();
 
     public TransportOrder SelectedItem = new();
     public List<TransportOrder> SelectedItems = new();
     public ITable<TransportOrder> Table;
 
-    int selectedWebsiteProjectId;
-    int SelectedWebsiteProjectId
-    {
-        get => selectedWebsiteProjectId;
-        set
-        {
-            selectedWebsiteProjectId = value;
-
-            // SelectSite(true);
-        }
-    }
+   
 
 
     protected override async Task OnInitializedAsync()
     {
 
-        data = await Http.GetFromJsonAsync<List<TransportOrder>>($"{Http.BaseAddress}/TransportOrders");
+        data = await httpClient.GetFromJsonAsync<List<TransportOrder>>($"{httpClient.BaseAddress}/TransportOrders") ?? new();
 
 
     }
@@ -84,7 +74,7 @@ public partial class TranportOrderPage
     {
         foreach (var item in data)
         {
-            await Http.PutAsJsonAsync($"{Http.BaseAddress}/TransportOrders/" + Convert.ToInt32(item.Id), item);
+            await httpClient.PutAsJsonAsync($"{httpClient.BaseAddress}/TransportOrders/" + Convert.ToInt32(item.Id), item);
         }
     }
 
