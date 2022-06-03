@@ -1,7 +1,7 @@
 <CascadingValue Value="this">
 	<ul class="nav nav-tabs mb-2" id="pills-tab" role="tablist">
 
-		@foreach (var tabPage in Pages)
+		@foreach (var tabPage in _pages)
 		{
 			<li class="nav-item" role="presentation">
 				<button class="@GetButtonClass(tabPage)" id="pills-article-tab" data-bs-toggle="pill" data-bs-target="#pills-article" type="button" role="tab" aria-controls="pills-article"
@@ -20,12 +20,12 @@
 	public RenderFragment ChildContent { get; set; }
 
 	public TabPage ActivePage { get; set; }
-	readonly List<TabPage> Pages = new();
+	readonly List<TabPage> _pages = new();
 
 	internal void AddPage(TabPage tabPage)
 	{
-		Pages.Add(tabPage);
-		if (Pages.Count == 1)
+		_pages.Add(tabPage);
+		if (_pages.Count == 1)
 			ActivePage = tabPage;
 		StateHasChanged();
 	}

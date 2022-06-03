@@ -36,20 +36,20 @@
 
 	private string decimalValue { get; set; }
 	private readonly NumberStyles style = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
-	private readonly CultureInfo culture = CultureInfo.CurrentCulture;
-	private bool init = true;
+	private readonly CultureInfo _culture = CultureInfo.CurrentCulture;
+	private bool _init = true;
 
 	private string DecimalValue
 	{
 		get => decimalValue;
 		set
 		{
-			if (decimal.TryParse(value.Replace(".", culture.NumberFormat.PercentDecimalSeparator).Replace(",", culture.NumberFormat.PercentDecimalSeparator), style, culture, out var temp))
+			if (decimal.TryParse(value.Replace(".", _culture.NumberFormat.PercentDecimalSeparator).Replace(",", _culture.NumberFormat.PercentDecimalSeparator), style, _culture, out var temp))
 			{
 				CurrentValue = temp;
-				if (init)
+				if (_init)
 				{
-					init = false;
+					_init = false;
 					decimalValue = temp.ToString(Format);
 				}
 				else
@@ -62,7 +62,7 @@
 
 	protected override void OnParametersSet()
 	{
-		init = true;
+		_init = true;
 		DecimalValue = CurrentValue.ToString(Format);
 	}
 

@@ -8,14 +8,14 @@ public class MyComponentBase : ComponentBase
 {
     public string CssClassTable = "pointer table table-sm table-condensed mt-3 table-xsmall";
     public string EditModalClass = "blazored-modal blazored-modal-edit";
-    public CultureInfo englCulture = CultureInfo.InvariantCulture;
+    public CultureInfo EnglCulture = CultureInfo.InvariantCulture;
 
     public FluentValidationValidator FluentValidationValidator;
-    public string inputSelectWithAddCss = "form-select form-select-sm col-lg-2";
-    public string inputSelectWithAddCss2 = "form-select form-select-sm col-lg-2";
+    public string InputSelectWithAddCss = "form-select form-select-sm col-lg-2";
+    public string InputSelectWithAddCss2 = "form-select form-select-sm col-lg-2";
     public string ItemInfo = "";
-    public NumberStyles numberStyle = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
-    public bool read;
+    public NumberStyles NumberStyle = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
+    public bool Read;
     public string TitlePrefix = "XENO-Backoffice | ";
     public bool write;
 
@@ -31,7 +31,7 @@ public class MyComponentBase : ComponentBase
 
     public Dictionary<string, int> columPositions { get; set; }
     [Parameter] public EventCallback<bool> IsEditChanged { get; set; }
-    [Parameter] public bool isEdit { get; set; }
+    [Parameter] public bool IsEdit { get; set; }
     [CascadingParameter] public IModalService Modal { get; set; }
     [Inject] protected NavigationManager NavigationManager { get; set; }
 
@@ -56,7 +56,7 @@ public class MyComponentBase : ComponentBase
         if (page == "") write = true;
         else if (AuthUser.IsInRole("admin")) write = true;
         else if (AuthUser.IsInRole("$" + page)) write = true;
-        else if (AuthUser.IsInRole(page)) read = true;
+        else if (AuthUser.IsInRole(page)) Read = true;
 
         Guid.TryParse(authState.User.FindFirst("tenantid").Value, out var tenantId);
         TenantId = tenantId;
