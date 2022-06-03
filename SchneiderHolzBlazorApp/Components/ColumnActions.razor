@@ -1,0 +1,71 @@
+﻿@typeparam TItem
+
+<Column TableItem="TItem" Title="#Actions" Class="@(ShowCopy ? "mw110 text-start" : "text-start")" Width="100px" Sortable="false">
+	<Template>
+		<a title="#Edit" class="text-primary me-3" @onclick="() => InvokeOnEdit(context)">
+			<i class="oi oi-pencil"></i>
+		</a>
+
+		@if (ShowCopy)
+		{
+			<a title="#Copy" class="text-info me-3" @onclick="() => InvokeOnCopy(context)">
+				<i class="oi oi-clipboard"></i>
+			</a>
+		}
+		@ChildContent
+		<a title="@(((IBaseModel) context).CanDelete ? "#Delete" : "#KeyInUse")"
+		   @onclick="() => InvokeOnDelete(context)">
+			@if (((IBaseModel) context).CanDelete)
+			{
+				<i class="oi oi-trash"></i>
+			}
+			else
+			{
+				<i class="oi-key text-secondary"></i>
+			}
+		</a>
+	</Template>
+</Column>
+
+@code {
+
+	[Parameter]
+	public RenderFragment ChildContent { get; set; }
+
+	[Parameter]
+	public bool ShowEdit { get; set; } = true;
+
+	[Parameter]
+	public bool ShowCopy { get; set; } = false;
+
+	[Parameter]
+	public bool ShowDelete { get; set; } = true;
+
+	[Parameter]
+	public Action<TItem> OnEditClick { get; set; }
+
+	[Parameter]
+	public Action<TItem> OnCopyClick { get; set; }
+
+	[Parameter]
+	public Action<TItem> OnDeleteClick { get; set; }
+
+	private void InvokeOnEdit(TItem context)
+	{
+		OnEditClick?.Invoke(context);
+	}
+
+	private void InvokeOnCopy(TItem context)
+	{
+		OnCopyClick?.Invoke(context);
+	}
+
+	private void InvokeOnDelete(TItem context)
+	{
+		if (((IBaseModel) context).CanDelete) OnDeleteClick?.Invoke(context);
+
+	// force delete
+	// OnDeleteClick.Invoke(context);
+	}
+
+}

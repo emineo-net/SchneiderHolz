@@ -9,6 +9,7 @@ global using SchneiderHolzBlazorApp.Shared;
 global using Microsoft.EntityFrameworkCore;
 global using SchneiderHolzBlazorApp.Models;
 global using Blazored.Modal;
+global using Blazored.Modal.Services;
 
 namespace SchneiderHolzBlazorApp;
 

@@ -1,3 +1,4 @@
+using Blazored.Toast;
 using Localization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -32,6 +33,8 @@ namespace SchneiderHolzBlazorApp
             });
             builder.Services.AddScoped<ILocalizer, Localizer>();
             builder.Services.AddBlazorTable();
+            builder.Services.AddBlazoredToast();
+            builder.Services.AddBlazoredModal();
 
             var app = builder.Build();
 

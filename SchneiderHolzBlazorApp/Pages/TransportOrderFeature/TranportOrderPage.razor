@@ -1,4 +1,15 @@
 ﻿@page "/tranportorder"
+@inject IToastService toastService
+@using Tools
+
+
+@if (!string.IsNullOrEmpty(SelectedItem.PackageNumber))
+{
+    <div class="position-absolute end-0 bottom-0">
+        <pre>@SelectedItem.ToString()</pre>
+    </div>
+}
+
 
 <br />
 <button class="btn btn-primary" @onclick="Save">Save</button>
@@ -6,21 +17,31 @@
 <button class="btn btn-sm btn-danger" title="Toggle Edit Mode" @onclick="@((x) => ToggleEdit())">Toggle Edit Mode</button>
 <br />
 
+
+
+
 @if (data.Count > 0)
 {
     <Table TableItem="TransportOrder" Items="data" ColumnReorder="true" class="@CssClassTable" @ref="Table"
        ShowSearchBar="true" RowClickAction="@(x => { SelectedItem = x; CssSelected = ""; StateHasChanged();})"
        SelectedItems="SelectedItems" SelectionType="SelectionType.Single" Header="Header">
 
+        <ToolBar>
 
-        @*	<ToolBar>
-    pling
-    <button type="button" class="btn btn-success btn-sm" @onclick="@(async () => await ShowModalEdit(null))">
-    <i class="fas fa-plus"></i> ClientAddClient
-    </button>
-    }
-    </ToolBar>
-    <ColumnActions TItem="TransportOrder" OnDeleteClick="async c => await Delete(c)" OnEditClick="async c => await ShowModalEdit(c)"/>*@
+            <button type="button" class="btn btn-success btn-sm" @onclick="@(async () => await StorePackage())">
+                <i class="fas fa-plus"></i> Einlagerung
+            </button>
+
+            <button type="button" class="btn btn-success btn-sm" @onclick="@(async () => await OutsourcePackage())">
+                <i class="fas fa-plus"></i> Auslagerung
+            </button>
+
+            <button type="button" class="btn btn-success btn-sm" @onclick="@(async () => await RelocatePackage())">
+                <i class="fas fa-plus"></i> Umlagerung
+            </button>
+
+        </ToolBar>
+        <ColumnActions TItem="TransportOrder" OnDeleteClick="async c => await Delete(c)" OnEditClick="async c => await ShowModalEdit(c)" />
 
 
         <Column TableItem="TransportOrder" Title="PackageNumber" Field="@(x => x.PackageNumber)">
@@ -31,7 +52,7 @@
                 <input type="text" @bind-value="@context.PackageNumber" class="form-control form-control-sm" />
             </EditTemplate>
         </Column>
-        <Column TableItem="TransportOrder" Title="Position" Field="@(x => x.Position)" >
+        <Column TableItem="TransportOrder" Title="Position" Field="@(x => x.Position)">
             <Template>
                 @context.Position
             </Template>
@@ -39,7 +60,7 @@
                 <input type="text" @bind-value="@context.Position" class="form-control form-control-sm" />
             </EditTemplate>
         </Column>
-        <Column TableItem="TransportOrder" Title="Location" Field="@(x => x.Location)" >
+        <Column TableItem="TransportOrder" Title="Location" Field="@(x => x.Location)">
             <Template>
                 @context.Location
             </Template>
@@ -47,7 +68,7 @@
                 <input type="text" @bind-value="@context.Location" class="form-control form-control-sm" />
             </EditTemplate>
         </Column>
-        <Column TableItem="TransportOrder" Title="Priority" Field="@(x => x.Priority)" >
+        <Column TableItem="TransportOrder" Title="Priority" Field="@(x => x.Priority)">
             <Template>
                 @context.Priority
             </Template>
@@ -55,7 +76,7 @@
                 <input type="text" @bind-value="@context.Priority" class="form-control form-control-sm" />
             </EditTemplate>
         </Column>
-        <Column TableItem="TransportOrder" Title="Source" Field="@(x => x.Source)" >
+        <Column TableItem="TransportOrder" Title="Source" Field="@(x => x.Source)">
             <Template>
                 @context.Source
             </Template>
@@ -71,7 +92,7 @@
                 <input type="text" @bind-value="@context.Status" class="form-control form-control-sm" />
             </EditTemplate>
         </Column>
-        <Column TableItem="TransportOrder" Title="Target" Field="@(x => x.Target)" >
+        <Column TableItem="TransportOrder" Title="Target" Field="@(x => x.Target)">
             <Template>
                 @context.Target
             </Template>
@@ -87,7 +108,7 @@
                 <input type="checkbox" @bind-value="@context.Ignore" class="form-check-input" />
             </EditTemplate>
         </Column>
-        <Column TableItem="TransportOrder" Title="Generated" Field="@(x => x.Generated)" >
+        <Column TableItem="TransportOrder" Title="Generated" Field="@(x => x.Generated)">
             <Template>
                 @context.Generated.ToLongDateString()
             </Template>

@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@using Blazored.Toast.Configuration
+@inherits LayoutComponentBase
 
 <PageTitle>SchneiderHolzBlazorApp</PageTitle>
 
@@ -18,3 +19,11 @@
         </article>
     </main>
 </div>
+
+<BlazoredToasts Position="ToastPosition.BottomCenter"
+                Timeout="10"
+                IconType="IconType.FontAwesome"
+                WarningIcon="oi oi-warning"
+                InfoIcon="oi oi-info"
+                SuccessIcon="oi oi-thumb-up"
+                ErrorIcon="oi oi-thumb-down" />
