@@ -4,17 +4,17 @@ namespace SchneiderHolzBlazorApp.Pages.TransportOrderFeature;
 
 public partial class TranportOrderPage
 {
-    private List<TransportOrder> data = new();
+    private List<TransportOrder> _data = new();
 
     public TransportOrder SelectedItem = new();
     public List<TransportOrder> SelectedItems = new();
     public ITable<TransportOrder> Table;
-    [Inject] private HttpClient httpClient { get; set; } = new();
+    [Inject] private HttpClient HttpClient { get; set; } = new();
 
 
     protected override async Task OnInitializedAsync()
     {
-        data = await httpClient.GetFromJsonAsync<List<TransportOrder>>($"{httpClient.BaseAddress}/TransportOrders") ??
+        _data = await HttpClient.GetFromJsonAsync<List<TransportOrder>>($"{HttpClient.BaseAddress}/TransportOrders") ??
                new List<TransportOrder>();
     }
 
@@ -52,7 +52,7 @@ public partial class TranportOrderPage
         }
         else if (!result.Cancelled)
         {
-            data.Add(resultObj);
+            _data.Add(resultObj);
         }
 
         else if (result.Cancelled)
@@ -83,7 +83,7 @@ public partial class TranportOrderPage
         }
         else if (!result.Cancelled)
         {
-            data.Add(resultObj);
+            _data.Add(resultObj);
         }
 
         else if (result.Cancelled)
@@ -114,7 +114,7 @@ public partial class TranportOrderPage
         }
         else if (!result.Cancelled)
         {
-            data.Add(resultObj);
+            _data.Add(resultObj);
         }
 
         else if (result.Cancelled)
@@ -144,7 +144,7 @@ public partial class TranportOrderPage
         }
         else if (!result.Cancelled)
         {
-            data.Add(resultObj);
+            _data.Add(resultObj);
         }
 
         else if (result.Cancelled)
@@ -164,8 +164,8 @@ public partial class TranportOrderPage
 
     public async Task Save()
     {
-        foreach (var item in data)
-            await httpClient.PutAsJsonAsync($"{httpClient.BaseAddress}/TransportOrders/" + Convert.ToInt32(item.Id),
+        foreach (var item in _data)
+            await HttpClient.PutAsJsonAsync($"{HttpClient.BaseAddress}/TransportOrders/" + Convert.ToInt32(item.Id),
                 item);
     }
 }

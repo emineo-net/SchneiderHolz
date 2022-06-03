@@ -17,9 +17,9 @@
 <br/>
 
 
-@if (data.Count > 0)
+@if (_data.Count > 0)
 {
-	<Table TableItem="TransportOrder" Items="data" ColumnReorder="true" class="@CssClassTable" @ref="Table"
+	<Table TableItem="TransportOrder" Items="_data" ColumnReorder="true" class="@CssClassTable" @ref="Table"
 	       ShowSearchBar="true" RowClickAction="@(x => { SelectedItem = x; CssSelected = ""; StateHasChanged();})"
 	       SelectedItems="SelectedItems" SelectionType="SelectionType.Single" Header="Header">
 

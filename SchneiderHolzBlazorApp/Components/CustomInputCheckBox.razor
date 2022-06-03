@@ -20,7 +20,7 @@
 	public string Label { get; set; }
 
 	[Parameter]
-	public Expression<Func<T>> ValidationFor { get; set; } = null;
+	public Expression<Func<T>>? ValidationFor { get; set; } = null;
 
 	[Parameter]
 	public string LabelCssClass { get; set; }
@@ -30,10 +30,7 @@
 
 	[Parameter]
 	public string InputContainerCssClass { get; set; }
-
-	protected override async Task OnInitializedAsync()
-	{
-	}
+	
 
 	protected override bool TryParseValueFromString(string value, out bool result, out string validationErrorMessage)
 	{

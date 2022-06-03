@@ -17,7 +17,7 @@ public class MyComponentBase : ComponentBase
     public NumberStyles NumberStyle = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
     public bool Read;
     public string TitlePrefix = "XENO-Backoffice | ";
-    public bool write;
+    public bool writable;
 
     [CascadingParameter(Name = "CompanyIdParam")]
     public int CompanyId { get; set; }
@@ -53,9 +53,9 @@ public class MyComponentBase : ComponentBase
             return Guid.Empty;
         }
 
-        if (page == "") write = true;
-        else if (AuthUser.IsInRole("admin")) write = true;
-        else if (AuthUser.IsInRole("$" + page)) write = true;
+        if (page == "") writable = true;
+        else if (AuthUser.IsInRole("admin")) writable = true;
+        else if (AuthUser.IsInRole("$" + page)) writable = true;
         else if (AuthUser.IsInRole(page)) Read = true;
 
         Guid.TryParse(authState.User.FindFirst("tenantid").Value, out var tenantId);
