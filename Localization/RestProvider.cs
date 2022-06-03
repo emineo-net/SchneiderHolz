@@ -2,7 +2,7 @@ namespace Localization;
 
 public class RestProvider : ILocalizationProvider
 {
-    private static string LocalizerUrl = "https://localize.xenia-pos.net/api/LocalizeText";
+    private static string LocalizerUrl = "https://xxx.de/api/LocalizeText";
 
     public Dictionary<string, string> GetData(string locale, string sourcePath)
     {

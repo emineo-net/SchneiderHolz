@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+	  <TargetFramework>net6.0</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
     <IsPackable>true</IsPackable>
     <Title>BlazorTable</Title>
@@ -17,9 +17,20 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702;1591</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
+    <None Include="Components\ToolBar.razor" />
     <None Include="icon.png" Pack="true" PackagePath="" />
     <Watch Include="..\**\*.razor" />
+    <Content Remove="Components\ToolBar.razor" />
+    <Watch Remove="Components\ToolBar.razor" />
     <BlazorLinkerDescriptor Include="LinkerConfig.xml" />
     <EmbeddedResource Include="LinkerConfig.xml">
       <LogicalName>$(MSBuildProjectName).xml</LogicalName>

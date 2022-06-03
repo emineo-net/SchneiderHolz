@@ -19,12 +19,11 @@
 
 @if (_data.Count > 0)
 {
-	<Table TableItem="TransportOrder" Items="_data" ColumnReorder="true" class="@CssClassTable" @ref="Table"
+	<Table TableItem="TransportOrder" Items="_data" ColumnReorder="true" CssClass="@CssClassTable" @ref="Table"
 	       ShowSearchBar="true" RowClickAction="@(x => { SelectedItem = x; CssSelected = ""; StateHasChanged();})"
 	       SelectedItems="SelectedItems" SelectionType="SelectionType.Single" Header="Header">
 
 		<ToolBar>
-
 			<button type="button" class="btn btn-success btn-sm" @onclick="@(async () => await StorePackage())">
 				<i class="fas fa-plus"></i> Einlagerung
 			</button>
@@ -36,7 +35,6 @@
 			<button type="button" class="btn btn-success btn-sm" @onclick="@(async () => await RelocatePackage())">
 				<i class="fas fa-plus"></i> Umlagerung
 			</button>
-
 		</ToolBar>
 		<ColumnActions TItem="TransportOrder" OnDeleteClick="async c => await Delete(c)" OnEditClick="async c => await ShowModalEdit(c)"/>
 
@@ -97,7 +95,7 @@
 				<input type="text" @bind-value="@context.Target" class="form-control form-control-sm"/>
 			</EditTemplate>
 		</Column>
-		<Column TableItem="TransportOrder" Title="Ignore" Field="@(x => x.Ignore)" Class="text-center">
+		<Column TableItem="TransportOrder" Title="Ignore" Field="@(x => x.Ignore)" CssClass="text-center">
 			<Template>
 				@context.Ignore
 			</Template>

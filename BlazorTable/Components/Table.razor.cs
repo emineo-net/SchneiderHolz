@@ -292,6 +292,12 @@ namespace BlazorTable
             _emptyDataTemplate = emptyDataTemplate?.ChildContent;
         }
 
+        private RenderFragment _toolBarTemplate;
+        public void SetLoadingToolBarTemplate(ToolBar toolBarTemplate)
+        {
+            _toolBarTemplate = toolBarTemplate?.ChildContent;
+        }
+
         /// <summary>
         ///     Set the template to use for loading data
         /// </summary>

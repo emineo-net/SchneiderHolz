@@ -133,7 +133,7 @@ namespace BlazorTable
         /// <summary>
         ///     Column CSS Class
         /// </summary>
-        string Class { get; set; }
+        string CssClass { get; set; }
 
         /// <summary>
         ///     Column Footer CSS Class

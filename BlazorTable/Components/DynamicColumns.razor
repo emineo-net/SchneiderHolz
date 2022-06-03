@@ -12,7 +12,7 @@
 	{
 		var member = GenerateMemberExpression<TableItem, object>(propertyInfo);
 
-		<Column TableItem="TableItem" Title="@propertyInfo.Name" Type="propertyInfo.PropertyType.GetNonNullableType()" Field="member" Sortable="Sortable" Filterable="Filterable" Class="Class">
+		<Column TableItem="TableItem" Title="@propertyInfo.Name" Type="propertyInfo.PropertyType.GetNonNullableType()" Field="member" Sortable="Sortable" Filterable="Filterable" CssClass="Class">
 			<Template>
 				@RenderProperty(context, propertyInfo, member.Compile())
 			</Template>

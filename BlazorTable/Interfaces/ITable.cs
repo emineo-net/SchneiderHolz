@@ -109,6 +109,8 @@ namespace BlazorTable
         /// </summary>
         Task UpdateAsync();
 
+        void SetLoadingToolBarTemplate(ToolBar template);
+
         /// <summary>
         ///     Open/Close detail view in specified row.
         /// </summary>

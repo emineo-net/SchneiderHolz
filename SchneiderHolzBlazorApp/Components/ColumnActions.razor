@@ -1,6 +1,6 @@
 ﻿@typeparam TItem
 
-<Column TableItem="TItem" Title="#Actions" Class="@(ShowCopy ? "mw110 text-start" : "text-start")" Width="100px" Sortable="false">
+<Column TableItem="TItem" Title="#Actions" CssClass="@(ShowCopy ? "mw110 text-start" : "text-start")" Width="100px" Sortable="false">
 	<Template>
 		<a title="#Edit" class="text-primary me-3" @onclick="() => InvokeOnEdit(context)">
 			<i class="oi oi-pencil"></i>

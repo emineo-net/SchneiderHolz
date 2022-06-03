@@ -6,7 +6,4 @@ public partial class InputFormatedNumber
     [Parameter] public string CssClass { get; set; }
 
 
-    protected override async Task OnInitializedAsync()
-    {
-    }
 }

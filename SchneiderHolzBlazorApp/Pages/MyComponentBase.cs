@@ -42,24 +42,4 @@ public class MyComponentBase : ComponentBase
 
     public string CssSelected { get; set; } = "disabled";
 
-    protected async Task<Guid> GetTenantId(string page)
-    {
-        var authState = AuthenticationState.Result;
-        AuthUser = authState.User;
-
-        if (!AuthUser.Identity.IsAuthenticated)
-        {
-            NavigationManager.NavigateTo("/login");
-            return Guid.Empty;
-        }
-
-        if (page == "") writable = true;
-        else if (AuthUser.IsInRole("admin")) writable = true;
-        else if (AuthUser.IsInRole("$" + page)) writable = true;
-        else if (AuthUser.IsInRole(page)) Read = true;
-
-        Guid.TryParse(authState.User.FindFirst("tenantid").Value, out var tenantId);
-        TenantId = tenantId;
-        return tenantId;
-    }
 }
