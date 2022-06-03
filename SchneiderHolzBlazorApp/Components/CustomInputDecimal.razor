@@ -1,6 +1,5 @@
 ﻿@typeparam T
 @using System.Linq.Expressions
-@using System.Globalization
 @inherits InputBase<decimal>
 
 @if (!string.IsNullOrWhiteSpace(Label))
@@ -9,7 +8,7 @@
 }
 <div class="@(InputContainerCssClass != null ? InputContainerCssClass : "col")">
 	<input @bind="DecimalValue" @attributes="AdditionalAttributes" class="@(InputCssClass != null ? InputCssClass : "form-control form-control-sm")" id="@Label" type="text"/>
-	@if(ValidationFor is not null) 
+	@if (ValidationFor is not null)
 	{
 		<ValidationMessage For="@ValidationFor"/>
 	}
@@ -33,11 +32,11 @@
 	public string InputContainerCssClass { get; set; }
 
 	[Parameter]
-	public Expression<Func<T>> ValidationFor { get; set; } = null;
+	public Expression<Func<T>> ValidationFor { get; set; }
 
 	private string decimalValue { get; set; }
-	private NumberStyles style = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
-	private CultureInfo culture = CultureInfo.CurrentCulture;
+	private readonly NumberStyles style = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
+	private readonly CultureInfo culture = CultureInfo.CurrentCulture;
 	private bool init = true;
 
 	private string DecimalValue

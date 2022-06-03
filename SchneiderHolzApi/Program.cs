@@ -7,16 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 {
     var services = builder.Services;
     var env = builder.Environment;
- 
+
     if (env.IsProduction())
-    {
         services.AddDbContext<DataContext>();
-    }
     else
-    {
         //services.AddDbContext<DataContext>();
-       services.AddDbContext<DataContext, SqliteDataContext>();
-    }
+        services.AddDbContext<DataContext, SqliteDataContext>();
     services.AddCors();
     services.AddControllers();
     services.AddSwaggerGen();
@@ -29,7 +25,7 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();    
+    var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();
     dataContext.Database.Migrate();
 }
 
@@ -43,6 +39,7 @@ using (var scope = app.Services.CreateScope())
         app.UseSwagger();
         app.UseSwaggerUI();
     }
+
     app.MapControllers();
 }
 app.Run("http://localhost:4000");

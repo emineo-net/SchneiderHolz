@@ -8,7 +8,7 @@
 }
 <div class="col">
 	<input @bind="CurrentValue" @attributes="AdditionalAttributes" class="form-control form-control-sm @AdditionalCssClass"
-	 step="@Step"  min="@Min" max="@(Max.Length > 3 ? Max.Substring(0,3) : Max)" title="@ToolTip" type="range"/>
+	       step="@Step" min="@Min" max="@(Max.Length > 3 ? Max.Substring(0, 3) : Max)" title="@ToolTip" type="range"/>
 	<ValidationMessage For="@ValidationFor"/>
 </div>
 
@@ -16,10 +16,13 @@
 
 	[Parameter]
 	public string ToolTip { get; set; }
+
 	[Parameter]
 	public string Step { get; set; }
+
 	[Parameter]
 	public string Min { get; set; }
+
 	[Parameter]
 	public string Max { get; set; }
 

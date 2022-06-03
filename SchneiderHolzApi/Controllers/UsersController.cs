@@ -1,6 +1,4 @@
-﻿namespace SchneiderHolzApi.Controllers;
-
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using SchneiderHolzApi.Authorization;
@@ -8,14 +6,16 @@ using SchneiderHolzApi.Helpers;
 using SchneiderHolzApi.Models.Users;
 using SchneiderHolzApi.Services;
 
+namespace SchneiderHolzApi.Controllers;
+
 //[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class UsersController : ControllerBase
 {
-    private IUserService _userService;
-    private IMapper _mapper;
     private readonly AppSettings _appSettings;
+    private IMapper _mapper;
+    private readonly IUserService _userService;
 
     public UsersController(
         IUserService userService,

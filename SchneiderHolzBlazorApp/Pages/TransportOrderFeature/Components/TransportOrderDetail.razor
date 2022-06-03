@@ -1,20 +1,20 @@
 ﻿<EditForm Model="@SelectedItem" OnValidSubmit="@ValidSubmit">
-    <FluentValidationValidator @ref="FluentValidationValidator" />
-    <div class="modal-body row row-cols-2">
+	<FluentValidationValidator @ref="FluentValidationValidator"/>
+	<div class="modal-body row row-cols-2">
 
-        <CustomInputText @bind-Value="SelectedItem.PackageNumber" ValidationFor="@(() => SelectedItem.PackageNumber)" Label="PackageNumber" />
-        <CustomInputText @bind-Value="SelectedItem.Location" ValidationFor="@(() => SelectedItem.Location)" Label="Location" />
-        <CustomInputText @bind-Value="SelectedItem.Position" ValidationFor="@(() => SelectedItem.Position)" Label="Position" />
-        <CustomInputText @bind-Value="SelectedItem.Type" ValidationFor="@(() => SelectedItem.Type)" Label="Type" />
-        <CustomInputText @bind-Value="SelectedItem.Target" ValidationFor="@(() => SelectedItem.Target)" Label="Target" />
-        <CustomInputText @bind-Value="SelectedItem.Status" ValidationFor="@(() => SelectedItem.Status)" Label="Status" />
-        <CustomInputText @bind-Value="SelectedItem.Priority" ValidationFor="@(() => SelectedItem.Priority)" Label="Priority" />
-        <CustomInputText @bind-Value="SelectedItem.Source" ValidationFor="@(() => SelectedItem.Source)" Label="Source" />
-        <CustomInputDate @bind-Value="SelectedItem.Generated" ValidationFor="@(() => SelectedItem.Generated)" Label="Generated" />
-        <CustomInputCheckBox @bind-Value="SelectedItem.Ignore" ValidationFor="@(() => SelectedItem.Ignore)" Label="Ignore" />
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary btn-sm" type="submit">#Save</button>
-        <button class="btn btn-outline-secondary btn-sm" type="button" @onclick="@(() => BlazoredModal.CancelAsync())">#Cancel</button>
-    </div>
+		<CustomInputText @bind-Value="SelectedItem.PackageNumber" ValidationFor="@(() => SelectedItem.PackageNumber)" Label="PackageNumber"/>
+		<CustomInputText @bind-Value="SelectedItem.Location" ValidationFor="@(() => SelectedItem.Location)" Label="Location"/>
+		<CustomInputText @bind-Value="SelectedItem.Position" ValidationFor="@(() => SelectedItem.Position)" Label="Position"/>
+		<CustomInputText @bind-Value="SelectedItem.Type" ValidationFor="@(() => SelectedItem.Type)" Label="Type"/>
+		<CustomInputText @bind-Value="SelectedItem.Target" ValidationFor="@(() => SelectedItem.Target)" Label="Target"/>
+		<CustomInputText @bind-Value="SelectedItem.Status" ValidationFor="@(() => SelectedItem.Status)" Label="Status"/>
+		<CustomInputText @bind-Value="SelectedItem.Priority" ValidationFor="@(() => SelectedItem.Priority)" Label="Priority"/>
+		<CustomInputText @bind-Value="SelectedItem.Source" ValidationFor="@(() => SelectedItem.Source)" Label="Source"/>
+		<CustomInputDate @bind-Value="SelectedItem.Generated" ValidationFor="@(() => SelectedItem.Generated)" Label="Generated"/>
+		<CustomInputCheckBox @bind-Value="SelectedItem.Ignore" ValidationFor="@(() => SelectedItem.Ignore)" Label="Ignore"/>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary btn-sm" type="submit">#Save</button>
+		<button class="btn btn-outline-secondary btn-sm" type="button" @onclick="@(() => BlazoredModal.CancelAsync())">#Cancel</button>
+	</div>
 </EditForm>

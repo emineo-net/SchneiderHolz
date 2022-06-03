@@ -1,8 +1,4 @@
-using System.Globalization;
-using System.Threading.Tasks;
 using Localization;
-using Microsoft.AspNetCore.Components;
-using SchneiderHolzBlazorApp.Models;
 
 namespace SchneiderHolzBlazorApp.Components;
 
@@ -18,5 +14,4 @@ public partial class LabelLocalizeable
     private Localize SelectedItem { get; set; }
 
     private string Translated { get; set; }
-
 }

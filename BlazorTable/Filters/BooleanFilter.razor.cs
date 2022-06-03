@@ -1,22 +1,57 @@
-﻿using BlazorTable.Localization;
-using Microsoft.AspNetCore.Components;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Components;
 
 namespace BlazorTable
 {
     public partial class BooleanFilter<TableItem> : IFilter<TableItem>
     {
-        [CascadingParameter(Name = "Column")]
-        public IColumn<TableItem> Column { get; set; }
+        [CascadingParameter(Name = "Column")] public IColumn<TableItem> Column { get; set; }
 
         private BooleanCondition Condition { get; set; }
 
-        public List<Type> FilterTypes => new List<Type>()
+        public List<Type> FilterTypes => new List<Type>
         {
             typeof(bool)
         };
+
+        public Expression<Func<TableItem, bool>> GetFilter()
+        {
+            return Condition switch
+            {
+                BooleanCondition.True =>
+                    Expression.Lambda<Func<TableItem, bool>>(
+                        Expression.AndAlso(
+                            Column.Field.Body.CreateNullChecks(),
+                            Expression.IsTrue(Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()))),
+                        Column.Field.Parameters),
+
+                BooleanCondition.False =>
+                    Expression.Lambda<Func<TableItem, bool>>(
+                        Expression.AndAlso(
+                            Column.Field.Body.CreateNullChecks(),
+                            Expression.IsFalse(Expression.Convert(Column.Field.Body,
+                                Column.Type.GetNonNullableType()))),
+                        Column.Field.Parameters),
+
+                BooleanCondition.IsNull =>
+                    Expression.Lambda<Func<TableItem, bool>>(
+                        Expression.AndAlso(
+                            Column.Field.Body.CreateNullChecks(true),
+                            Expression.Equal(Column.Field.Body, Expression.Constant(null))),
+                        Column.Field.Parameters),
+
+                BooleanCondition.IsNotNull =>
+                    Expression.Lambda<Func<TableItem, bool>>(
+                        Expression.AndAlso(
+                            Column.Field.Body.CreateNullChecks(true),
+                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null))),
+                        Column.Field.Parameters),
+
+                _ => null
+            };
+        }
 
         protected override void OnInitialized()
         {
@@ -30,9 +65,7 @@ namespace BlazorTable
 
                     if (Column.Filter.Body is BinaryExpression binaryExpression
                         && binaryExpression.NodeType == ExpressionType.AndAlso)
-                    {
                         nodeType = binaryExpression.Right.NodeType;
-                    }
 
                     switch (nodeType)
                     {
@@ -51,42 +84,6 @@ namespace BlazorTable
                     }
                 }
             }
-        }
-
-        public Expression<Func<TableItem, bool>> GetFilter()
-        {
-            return Condition switch
-            {
-                BooleanCondition.True =>
-                    Expression.Lambda<Func<TableItem, bool>>(
-                        Expression.AndAlso(
-                            Column.Field.Body.CreateNullChecks(),
-                            Expression.IsTrue(Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()))),
-                        Column.Field.Parameters),
-
-                BooleanCondition.False =>
-                    Expression.Lambda<Func<TableItem, bool>>(
-                        Expression.AndAlso(
-                            Column.Field.Body.CreateNullChecks(),
-                            Expression.IsFalse(Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()))),
-                            Column.Field.Parameters),
-
-                BooleanCondition.IsNull =>
-                    Expression.Lambda<Func<TableItem, bool>>(
-                        Expression.AndAlso(
-                            Column.Field.Body.CreateNullChecks(true),
-                            Expression.Equal(Column.Field.Body, Expression.Constant(null))),
-                        Column.Field.Parameters),
-
-                BooleanCondition.IsNotNull =>
-                    Expression.Lambda<Func<TableItem, bool>>(
-                        Expression.AndAlso(
-                            Column.Field.Body.CreateNullChecks(true),
-                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null))),
-                        Column.Field.Parameters),
-
-                _ => null,
-            };
         }
     }
 

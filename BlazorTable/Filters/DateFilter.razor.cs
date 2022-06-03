@@ -1,57 +1,16 @@
-﻿using Microsoft.AspNetCore.Components;
-using System;
+﻿using System;
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Components;
 
 namespace BlazorTable
 {
     public partial class DateFilter<TableItem> : IFilter<TableItem>
     {
-        [CascadingParameter(Name = "Column")]
-        public IColumn<TableItem> Column { get; set; }
+        [CascadingParameter(Name = "Column")] public IColumn<TableItem> Column { get; set; }
 
         private NumberCondition Condition { get; set; }
 
         private DateTime FilterValue { get; set; } = DateTime.Now;
-
-        protected override void OnInitialized()
-        {
-            if (Column.Type.GetNonNullableType() == typeof(DateTime))
-            {
-                Column.FilterControl = this;
-
-                if (Column.Filter?.Body is BinaryExpression binaryExpression
-                    && binaryExpression.Right is BinaryExpression logicalBinary
-                    && logicalBinary.Right is ConstantExpression constant)
-                {
-                    switch (binaryExpression.Right.NodeType)
-                    {
-                        case ExpressionType.Equal:
-                            Condition = constant.Value == null ? NumberCondition.IsNull : NumberCondition.IsEqualTo;
-                            break;
-                        case ExpressionType.NotEqual:
-                            Condition = constant.Value == null ? NumberCondition.IsNotNull : NumberCondition.IsNotEqualTo;
-                            break;
-                        case ExpressionType.GreaterThanOrEqual:
-                            Condition = NumberCondition.IsGreaterThanOrEqualTo;
-                            break;
-                        case ExpressionType.GreaterThan:
-                            Condition = NumberCondition.IsGreaterThan;
-                            break;
-                        case ExpressionType.LessThanOrEqual:
-                            Condition = NumberCondition.IsLessThanOrEqualTo;
-                            break;
-                        case ExpressionType.LessThan:
-                            Condition = NumberCondition.IsLessThan;
-                            break;
-                    }
-
-                    if (constant.Value != null && DateTime.TryParse(constant.Value.ToString(), out DateTime result))
-                    {
-                        FilterValue = result;
-                    }
-                }
-            }
-        }
 
         public Expression<Func<TableItem, bool>> GetFilter()
         {
@@ -125,8 +84,48 @@ namespace BlazorTable
                             Expression.NotEqual(Column.Field.Body, Expression.Constant(null))),
                         Column.Field.Parameters),
 
-                _ => throw new ArgumentException(Condition + " is not defined!"),
+                _ => throw new ArgumentException(Condition + " is not defined!")
             };
+        }
+
+        protected override void OnInitialized()
+        {
+            if (Column.Type.GetNonNullableType() == typeof(DateTime))
+            {
+                Column.FilterControl = this;
+
+                if (Column.Filter?.Body is BinaryExpression binaryExpression
+                    && binaryExpression.Right is BinaryExpression logicalBinary
+                    && logicalBinary.Right is ConstantExpression constant)
+                {
+                    switch (binaryExpression.Right.NodeType)
+                    {
+                        case ExpressionType.Equal:
+                            Condition = constant.Value == null ? NumberCondition.IsNull : NumberCondition.IsEqualTo;
+                            break;
+                        case ExpressionType.NotEqual:
+                            Condition = constant.Value == null
+                                ? NumberCondition.IsNotNull
+                                : NumberCondition.IsNotEqualTo;
+                            break;
+                        case ExpressionType.GreaterThanOrEqual:
+                            Condition = NumberCondition.IsGreaterThanOrEqualTo;
+                            break;
+                        case ExpressionType.GreaterThan:
+                            Condition = NumberCondition.IsGreaterThan;
+                            break;
+                        case ExpressionType.LessThanOrEqual:
+                            Condition = NumberCondition.IsLessThanOrEqualTo;
+                            break;
+                        case ExpressionType.LessThan:
+                            Condition = NumberCondition.IsLessThan;
+                            break;
+                    }
+
+                    if (constant.Value != null && DateTime.TryParse(constant.Value.ToString(), out var result))
+                        FilterValue = result;
+                }
+            }
         }
     }
 }

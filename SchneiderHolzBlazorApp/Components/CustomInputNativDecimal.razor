@@ -1,5 +1,4 @@
-﻿@using System.Globalization
-<input @bind="DecimalValue" class="form-control form-control-sm text-end" id="@ControlId" type="text"/>
+﻿<input @bind="DecimalValue" class="form-control form-control-sm text-end" id="@ControlId" type="text"/>
 
 @code
 {
@@ -16,8 +15,8 @@
 	public string Format { get; set; } = "N2";
 
 	private string decimalValue { get; set; }
-	private NumberStyles style = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
-	private CultureInfo culture = CultureInfo.CurrentCulture;
+	private readonly NumberStyles style = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
+	private readonly CultureInfo culture = CultureInfo.CurrentCulture;
 	private bool init = true;
 
 	private string DecimalValue

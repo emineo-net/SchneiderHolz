@@ -6,24 +6,24 @@
 <div class="@(InputContainerCssClass != null ? InputContainerCssClass : "col")">
 	<div class="input-group mt-3">
 		<button class="btn btn-outline-primary btn-sm"
-				type="button"
-				@onclick="@(() => Up())">
+		        type="button"
+		        @onclick="@(() => Up())">
 			<i class="fas fa-plus"></i>
 		</button>
 		@if (!string.IsNullOrWhiteSpace(Label))
 		{
-			<LabelLocalizeable CssClass="@(LabelCssClass != null ? LabelCssClass : "col col-form-label text-center border")" TranslateKey="@Label" />
+			<LabelLocalizeable CssClass="@(LabelCssClass != null ? LabelCssClass : "col col-form-label text-center border")" TranslateKey="@Label"/>
 		}
-		<input @bind="CurrentValue" @attributes="AdditionalAttributes" class="@(InputCssClass != null ? InputCssClass : "d-none")" id="@Label" type="number" />
+		<input @bind="CurrentValue" @attributes="AdditionalAttributes" class="@(InputCssClass != null ? InputCssClass : "d-none")" id="@Label" type="number"/>
 		<button class="btn btn-outline-primary btn-sm"
-				type="button"
-				@onclick="@(() => Down())">
+		        type="button"
+		        @onclick="@(() => Down())">
 			<i class="fas fa-minus"></i>
 		</button>
 	</div>
 
 
-	<ValidationMessage For="@ValidationFor" />
+	<ValidationMessage For="@ValidationFor"/>
 </div>
 
 @code {
@@ -56,6 +56,7 @@
 	{
 		CurrentValue++;
 	}
+
 	private async Task Down()
 	{
 		CurrentValue--;

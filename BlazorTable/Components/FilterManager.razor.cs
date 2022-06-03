@@ -7,17 +7,13 @@ namespace BlazorTable
 {
     public partial class FilterManager<TableItem>
     {
-        [CascadingParameter(Name = "Column")]
-        public IColumn<TableItem> Column { get; set; }
+        [CascadingParameter(Name = "Column")] public IColumn<TableItem> Column { get; set; }
 
-        [Parameter]
-        public RenderFragment ChildContent { get; set; }
+        [Parameter] public RenderFragment ChildContent { get; set; }
 
-        [Inject]
-        public ILogger<FilterManager<TableItem>> Logger { get; set; }
+        [Inject] public ILogger<FilterManager<TableItem>> Logger { get; set; }
 
-        [Inject]
-        IStringLocalizer<Localization.Localization> Localization { get; set; }
+        [Inject] private IStringLocalizer<Localization.Localization> Localization { get; set; }
 
         private async Task ApplyFilterAsync()
 

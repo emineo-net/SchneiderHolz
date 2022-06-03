@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using Microsoft.AspNetCore.Components;
 
 namespace SchneiderHolzBlazorApp.Components;
 

@@ -1,11 +1,10 @@
-namespace SchneiderHolzApi.Services;
-
 using AutoMapper;
-using BCrypt.Net;
 using SchneiderHolzApi.Authorization;
 using SchneiderHolzApi.Entities;
 using SchneiderHolzApi.Helpers;
 using SchneiderHolzApi.Models.Users;
+
+namespace SchneiderHolzApi.Services;
 
 public interface IUserService
 {
@@ -19,9 +18,9 @@ public interface IUserService
 
 public class UserService : IUserService
 {
-    private DataContext _context;
-    private IJwtUtils _jwtUtils;
     private readonly IMapper _mapper;
+    private readonly DataContext _context;
+    private readonly IJwtUtils _jwtUtils;
 
     public UserService(
         DataContext context,
@@ -37,10 +36,8 @@ public class UserService : IUserService
     {
         var user = _context.Users.SingleOrDefault(x => x.Username == model.Username);
 
-        if (user == null || !BCrypt.Verify(model.Password, user.PasswordHash))
-        {
+        if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
             throw new AppException("Username or password is incorrect");
-        }
         var response = _mapper.Map<AuthenticateResponse>(user);
         response.Token = _jwtUtils.GenerateToken(user);
         return response;
@@ -59,11 +56,9 @@ public class UserService : IUserService
     public void Register(RegisterRequest model)
     {
         if (_context.Users.Any(x => x.Username == model.Username))
-        {
             throw new AppException("Username '" + model.Username + "' is already taken");
-        }
         var user = _mapper.Map<User>(model);
-        user.PasswordHash = BCrypt.HashPassword(model.Password);
+        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
         _context.Users.Add(user);
         _context.SaveChanges();
     }
@@ -73,14 +68,9 @@ public class UserService : IUserService
         var user = getUser(id);
 
         if (model.Username != user.Username && _context.Users.Any(x => x.Username == model.Username))
-        {
             throw new AppException("Username '" + model.Username + "' is already taken");
-        }
 
-        if (!string.IsNullOrEmpty(model.Password))
-        {
-            user.PasswordHash = BCrypt.HashPassword(model.Password);
-        }
+        if (!string.IsNullOrEmpty(model.Password)) user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
         _mapper.Map(model, user);
         _context.Users.Update(user);
         _context.SaveChanges();
@@ -92,6 +82,7 @@ public class UserService : IUserService
         _context.Users.Remove(user);
         _context.SaveChanges();
     }
+
     private User getUser(int id)
     {
         var user = _context.Users.Find(id);

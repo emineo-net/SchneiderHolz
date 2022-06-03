@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-
-namespace SchneiderHolzBlazorApp.Components;
+﻿namespace SchneiderHolzBlazorApp.Components;
 
 public partial class InputFormatedNumber
 {

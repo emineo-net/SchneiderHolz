@@ -1,6 +1,5 @@
-namespace Localization
+namespace Localization;
+
+public class Locale
 {
-    public class Locale
-    {
-    }
 }

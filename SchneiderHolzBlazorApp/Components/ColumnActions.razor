@@ -13,9 +13,9 @@
 			</a>
 		}
 		@ChildContent
-		<a title="@(((IBaseModel) context).CanDelete ? "#Delete" : "#KeyInUse")"
+		<a title="@(((IBaseModel)context).CanDelete ? "#Delete" : "#KeyInUse")"
 		   @onclick="() => InvokeOnDelete(context)">
-			@if (((IBaseModel) context).CanDelete)
+			@if (((IBaseModel)context).CanDelete)
 			{
 				<i class="oi oi-trash"></i>
 			}
@@ -62,7 +62,7 @@
 
 	private void InvokeOnDelete(TItem context)
 	{
-		if (((IBaseModel) context).CanDelete) OnDeleteClick?.Invoke(context);
+		if (((IBaseModel)context).CanDelete) OnDeleteClick?.Invoke(context);
 
 	// force delete
 	// OnDeleteClick.Invoke(context);

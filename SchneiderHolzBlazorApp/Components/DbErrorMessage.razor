@@ -1,20 +1,23 @@
 ﻿<div class="text-danger">
-    @if(DbException is not null)
-    {
-        @EvalText();
-    }
+	@if (DbException is not null)
+	{
+		@EvalText()
+		;
+	}
 </div>
 
 @code {
 
-    [Parameter] public Exception DbException { get; set; }
+	[Parameter]
+	public Exception DbException { get; set; }
 
-    private string EvalText() {
-        if (DbException is not null && DbException.InnerException is not null)
-            return $"{DbException.InnerException.Message}";
-        if (DbException is not null)
-            return $"{DbException.Message}";
-        return "System error";
-    }
+	private string EvalText()
+	{
+		if (DbException is not null && DbException.InnerException is not null)
+			return $"{DbException.InnerException.Message}";
+		if (DbException is not null)
+			return $"{DbException.Message}";
+		return "System error";
+	}
 
 }

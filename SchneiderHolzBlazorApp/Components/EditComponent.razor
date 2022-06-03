@@ -1,12 +1,8 @@
-﻿@using Microsoft.AspNetCore.Mvc.ViewFeatures
-
-
-<div class="@Class">
-    <div class="ft-07 mb-03 field-label @LabelClass">@Label</div>
-    @switch (TypeId)
-    {
-
-        @* use multiple casas ===================
+﻿<div class="@Class">
+	<div class="ft-07 mb-03 field-label @LabelClass">@Label</div>
+	@switch (TypeId)
+	{
+@* use multiple casas ===================
 
             case "run":
             case "notrun":
@@ -18,9 +14,7 @@
             break;  *@
 
 
-
-
-        @* original ===============
+@* original ===============
             case InputType.constant:
             <div class="label-field-value @ValueClass">@Value</div>
             break;
@@ -36,74 +30,72 @@
             @bind="DateValue" />*@
 
 
-        case 1:
-            <input class="form-control input @ValueClass"
-           type="text"
-           @bind="Value" />
-            break;
-        case 2:
-            <div class="label-field-value @ValueClass">@Value</div>
-            break;
-        case 3:
-            <input class="form-control input @ValueClass"
-           type="date"
-           @bind="DateValue" />
-            break;
-        default:
-            break;
-    }
+		case 1:
+			<input class="form-control input @ValueClass"
+			       type="text"
+			       @bind="Value"/>
+			break;
+		case 2:
+			<div class="label-field-value @ValueClass">@Value</div>
+			break;
+		case 3:
+			<input class="form-control input @ValueClass"
+			       type="date"
+			       @bind="DateValue"/>
+			break;
+	}
 </div>
 
 @code {
 
-    [Parameter]
-    public string ValueClass { get; set; }
+	[Parameter]
+	public string ValueClass { get; set; }
 
-    [Parameter]
-    public int TypeId { get; set; }
+	[Parameter]
+	public int TypeId { get; set; }
 
-    [Parameter]
-    public EventCallback<string> OnTextChange { get; set; }
+	[Parameter]
+	public EventCallback<string> OnTextChange { get; set; }
 
-    [Parameter]
-    public EventCallback<DateTime?> OnDateChange { get; set; }
+	[Parameter]
+	public EventCallback<DateTime?> OnDateChange { get; set; }
 
-    private string _tbText;
-    private DateTime? _tbDate;
+	private string _tbText;
+	private DateTime? _tbDate;
 
-    [Parameter]
-    public string Class { get; set; }
+	[Parameter]
+	public string Class { get; set; }
 
-    [Parameter]
-    public string Label { get; set; }
+	[Parameter]
+	public string Label { get; set; }
 
-    [Parameter]
-    public string LabelClass { get; set; }
+	[Parameter]
+	public string LabelClass { get; set; }
 
-    [Parameter]
-    public string Value
-    {
-        get => _tbText;
-        set
-        {
-            if (_tbText == value) return;
+	[Parameter]
+	public string Value
+	{
+		get => _tbText;
+		set
+		{
+			if (_tbText == value) return;
 
-            _tbText = value;
-            OnTextChange.InvokeAsync(value);
-        }
-    }
+			_tbText = value;
+			OnTextChange.InvokeAsync(value);
+		}
+	}
 
-    [Parameter]
-    public DateTime? DateValue
-    {
-        get => _tbDate;
-        set
-        {
-            if (_tbDate == value) return;
+	[Parameter]
+	public DateTime? DateValue
+	{
+		get => _tbDate;
+		set
+		{
+			if (_tbDate == value) return;
 
-            _tbDate = value;
-            OnDateChange.InvokeAsync(_tbDate);
-        }
-    }
+			_tbDate = value;
+			OnDateChange.InvokeAsync(_tbDate);
+		}
+	}
 
 }

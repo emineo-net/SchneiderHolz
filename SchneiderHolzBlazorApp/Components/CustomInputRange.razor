@@ -7,8 +7,8 @@
 	<LabelLocalizeable CssClass="col col-form-label" TranslateKey="@Label"/>
 }
 <div class="col">
-	<input @bind="CurrentValue" @attributes="AdditionalAttributes" class="form-control form-control-sm @AdditionalCssClass" id="@Label" 
-	 step="@Step"  min="@Min" max="@Max" type="range"/>
+	<input @bind="CurrentValue" @attributes="AdditionalAttributes" class="form-control form-control-sm @AdditionalCssClass" id="@Label"
+	       step="@Step" min="@Min" max="@Max" type="range"/>
 	<ValidationMessage For="@ValidationFor"/>
 </div>
 
@@ -16,8 +16,10 @@
 
 	[Parameter]
 	public double Step { get; set; }
+
 	[Parameter]
 	public double Min { get; set; }
+
 	[Parameter]
 	public double Max { get; set; }
 

@@ -10,5 +10,4 @@
 
         public int? Skip { get; set; }
     }
-
 }

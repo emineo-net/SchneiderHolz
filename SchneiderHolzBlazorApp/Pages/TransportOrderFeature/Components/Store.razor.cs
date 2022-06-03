@@ -2,7 +2,7 @@
 
 public partial class Store
 {
-    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+    [CascadingParameter] private BlazoredModalInstance BlazoredModal { get; set; } = default!;
     private ILogger<TransportOrderDetail> Logger { get; set; }
     [Parameter] public TransportOrder SelectedItem { get; set; }
 
@@ -11,5 +11,4 @@ public partial class Store
     {
         throw new NotImplementedException();
     }
-
 }

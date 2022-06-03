@@ -1,10 +1,10 @@
-namespace SchneiderHolzApi.Helpers;
-
 using Microsoft.EntityFrameworkCore;
 using SchneiderHolzApi.Entities;
 using SchneiderHolzApi.Models;
 
-public partial class DataContext : DbContext
+namespace SchneiderHolzApi.Helpers;
+
+public class DataContext : DbContext
 {
     protected readonly IConfiguration Configuration;
 
@@ -13,13 +13,13 @@ public partial class DataContext : DbContext
         Configuration = configuration;
     }
 
+    public DbSet<User> Users { get; set; }
+    public virtual DbSet<TransportOrder> TransportOrders { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
         options.UseSqlServer(Configuration.GetConnectionString("WebApiDatabase"));
     }
-
-    public DbSet<User> Users { get; set; }
-    public virtual DbSet<TransportOrder> TransportOrders { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -94,8 +94,8 @@ public partial class DataContext : DbContext
         OnModelCreatingPartial(modelBuilder);
     }
 
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-
-
+    private void OnModelCreatingPartial(ModelBuilder modelBuilder)
+    {
+        throw new NotImplementedException();
+    }
 }

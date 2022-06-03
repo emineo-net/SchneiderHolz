@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 
-namespace SchneiderHolzBlazorApp.Data
+namespace SchneiderHolzBlazorApp.Data;
+
+public class ApplicationDbContext : IdentityDbContext
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : base(options)
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-        }
     }
 }

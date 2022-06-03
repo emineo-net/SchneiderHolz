@@ -1,10 +1,6 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
+namespace Localization;
 
-namespace Localization
+public interface ILocalizationProvider
 {
-    public interface ILocalizationProvider
-    {
-        Dictionary<string, string> GetData(string locale, string sourcePath);
-    }
+    Dictionary<string, string> GetData(string locale, string sourcePath);
 }

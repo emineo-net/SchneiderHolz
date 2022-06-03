@@ -1,9 +1,9 @@
-﻿namespace SchneiderHolzApi.Controllers;
-
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SchneiderHolzApi.Helpers;
 using SchneiderHolzApi.Models;
+
+namespace SchneiderHolzApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -27,10 +27,7 @@ public class TransportOrdersController : ControllerBase
     {
         var tempParse = await _context.TransportOrders.FindAsync(id);
 
-        if (tempParse == null)
-        {
-            return NotFound();
-        }
+        if (tempParse == null) return NotFound();
 
         return tempParse;
     }
@@ -38,10 +35,7 @@ public class TransportOrdersController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> PutTransportOrder(int id, TransportOrder tempParse)
     {
-        if (id != tempParse.Id)
-        {
-            return BadRequest();
-        }
+        if (id != tempParse.Id) return BadRequest();
 
         _context.Entry(tempParse).State = EntityState.Modified;
 
@@ -52,13 +46,8 @@ public class TransportOrdersController : ControllerBase
         catch (DbUpdateConcurrencyException)
         {
             if (!TransportOrderExists(id))
-            {
                 return NotFound();
-            }
-            else
-            {
-                throw;
-            }
+            throw;
         }
 
         return NoContent();
@@ -77,10 +66,7 @@ public class TransportOrdersController : ControllerBase
     public async Task<IActionResult> DeleteTransportOrder(int id)
     {
         var tempParse = await _context.TransportOrders.FindAsync(id);
-        if (tempParse == null)
-        {
-            return NotFound();
-        }
+        if (tempParse == null) return NotFound();
 
         _context.TransportOrders.Remove(tempParse);
         await _context.SaveChangesAsync();

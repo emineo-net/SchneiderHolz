@@ -1,6 +1,5 @@
 ﻿@typeparam T
 @using System.Linq.Expressions
-@using System.Globalization
 @inherits InputBase<T>
 @if (!string.IsNullOrWhiteSpace(Label))
 {
@@ -14,7 +13,7 @@
 		}
 		@ChildContent
 	</select>
-	@if(ValidationFor != null) 
+	@if (ValidationFor != null)
 	{
 		<ValidationMessage For="@ValidationFor"/>
 	}
@@ -26,7 +25,7 @@
 	public string Label { get; set; }
 
 	[Parameter]
-	public Expression<Func<T>> ValidationFor { get; set; } = null;
+	public Expression<Func<T>> ValidationFor { get; set; }
 
 	[Parameter]
 	public RenderFragment ChildContent { get; set; }
@@ -38,35 +37,35 @@
 	{
 		if (typeof(T) == typeof(string))
 		{
-			result = (T) (object) value;
+			result = (T)(object)value;
 			validationErrorMessage = null;
 			return true;
 		}
 		if (typeof(T) == typeof(int))
 		{
 			int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsedValue);
-			result = (T) (object) parsedValue;
+			result = (T)(object)parsedValue;
 			validationErrorMessage = null;
 			return true;
 		}
 		if (typeof(T) == typeof(int?))
 		{
 			int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsedValue);
-			result = (T) (object) parsedValue;
+			result = (T)(object)parsedValue;
 			validationErrorMessage = null;
 			return true;
 		}
 		if (typeof(T) == typeof(Guid))
 		{
 			Guid.TryParse(value, out var parsedValue);
-			result = (T) (object) parsedValue;
+			result = (T)(object)parsedValue;
 			validationErrorMessage = null;
 			return true;
 		}
 		if (typeof(T) == typeof(Guid?))
 		{
 			Guid.TryParse(value, out var parsedValue);
-			result = (T) (object) parsedValue;
+			result = (T)(object)parsedValue;
 			validationErrorMessage = null;
 			return true;
 		}
@@ -74,7 +73,7 @@
 		{
 			try
 			{
-				result = (T) Enum.Parse(typeof(T), value);
+				result = (T)Enum.Parse(typeof(T), value);
 				validationErrorMessage = null;
 				return true;
 			}
@@ -87,7 +86,7 @@
 		}
 		try
 		{
-			result = (T) Enum.Parse(typeof(T), value);
+			result = (T)Enum.Parse(typeof(T), value);
 			validationErrorMessage = null;
 			return true;
 		}

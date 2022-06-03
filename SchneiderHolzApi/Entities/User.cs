@@ -1,6 +1,6 @@
-namespace SchneiderHolzApi.Entities;
-
 using System.Text.Json.Serialization;
+
+namespace SchneiderHolzApi.Entities;
 
 public class User
 {
@@ -9,6 +9,5 @@ public class User
     public string LastName { get; set; }
     public string Username { get; set; }
 
-    [JsonIgnore]
-    public string PasswordHash { get; set; }
+    [JsonIgnore] public string PasswordHash { get; set; }
 }

@@ -1,47 +1,46 @@
-﻿using BlazorTable.Localization;
-using Microsoft.AspNetCore.Components;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Components;
 
 namespace BlazorTable
 {
     public partial class CustomSelect<TableItem> : IFilter<TableItem>, ICustomSelect
     {
-        [CascadingParameter(Name = "Column")]
-        public IColumn<TableItem> Column { get; set; }
+        public enum CustomSelectCondition
+        {
+            [LocalizedDescription("CustomSelectConditionIsEqualTo", typeof(Localization.Localization))]
+            IsEqualTo,
 
-        [Parameter]
-        public RenderFragment ChildContent { get; set; }
+            [LocalizedDescription("CustomSelectConditionIsNotEqualTo", typeof(Localization.Localization))]
+            IsNotEqualTo,
 
-        private List<KeyValuePair<string, object>> Items = new List<KeyValuePair<string, object>>();
+            [LocalizedDescription("CustomSelectConditionIsNull", typeof(Localization.Localization))]
+            IsNull,
+
+            [LocalizedDescription("CustomSelectConditionIsNotNull", typeof(Localization.Localization))]
+            IsNotNull
+        }
+
+        private readonly List<KeyValuePair<string, object>> Items = new List<KeyValuePair<string, object>>();
+
+        [CascadingParameter(Name = "Column")] public IColumn<TableItem> Column { get; set; }
+
+        [Parameter] public RenderFragment ChildContent { get; set; }
 
         private CustomSelectCondition Condition { get; set; }
 
         private object FilterValue { get; set; }
 
-        protected override void OnInitialized()
+        public void AddSelect(string key, object value)
         {
-            Column.FilterControl = this;
+            Items.Add(new KeyValuePair<string, object>(key, value));
 
-            if (Column.Filter?.Body is BinaryExpression binaryExpression
-                && binaryExpression.Right is BinaryExpression logicalBinary
-                && logicalBinary.Right is ConstantExpression constant)
-            {
-                switch (logicalBinary.NodeType)
-                {
-                    case ExpressionType.Equal:
-                            Condition = constant.Value == null ? CustomSelectCondition.IsNull : CustomSelectCondition.IsEqualTo;
-                            break;
-                    case ExpressionType.NotEqual:
-                            Condition = constant.Value == null ? CustomSelectCondition.IsNotNull : CustomSelectCondition.IsNotEqualTo;
-                            break;
-                }
+            if (FilterValue == null) FilterValue = Items.FirstOrDefault().Value;
 
-                FilterValue = constant.Value;
-            }
+            StateHasChanged();
         }
 
         public Expression<Func<TableItem, bool>> GetFilter()
@@ -54,7 +53,8 @@ namespace BlazorTable
                             Column.Field.Body.CreateNullChecks(),
                             Expression.Equal(
                                 Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
-                                Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
+                                Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(),
+                                    CultureInfo.InvariantCulture)))),
                         Column.Field.Parameters),
 
                 CustomSelectCondition.IsNotEqualTo => Expression.Lambda<Func<TableItem, bool>>(
@@ -62,7 +62,8 @@ namespace BlazorTable
                         Column.Field.Body.CreateNullChecks(),
                         Expression.NotEqual(
                             Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
-                            Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
+                            Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(),
+                                CultureInfo.InvariantCulture)))),
                     Column.Field.Parameters),
 
                 CustomSelectCondition.IsNull =>
@@ -79,35 +80,34 @@ namespace BlazorTable
                             Expression.NotEqual(Column.Field.Body, Expression.Constant(null))),
                         Column.Field.Parameters),
 
-                _ => throw new ArgumentException(Condition + " is not defined!"),
+                _ => throw new ArgumentException(Condition + " is not defined!")
             };
         }
 
-        public void AddSelect(string key, object value)
+        protected override void OnInitialized()
         {
-            Items.Add(new KeyValuePair<string, object>(key, value));
+            Column.FilterControl = this;
 
-            if (FilterValue == null)
+            if (Column.Filter?.Body is BinaryExpression binaryExpression
+                && binaryExpression.Right is BinaryExpression logicalBinary
+                && logicalBinary.Right is ConstantExpression constant)
             {
-                FilterValue = Items.FirstOrDefault().Value;
+                switch (logicalBinary.NodeType)
+                {
+                    case ExpressionType.Equal:
+                        Condition = constant.Value == null
+                            ? CustomSelectCondition.IsNull
+                            : CustomSelectCondition.IsEqualTo;
+                        break;
+                    case ExpressionType.NotEqual:
+                        Condition = constant.Value == null
+                            ? CustomSelectCondition.IsNotNull
+                            : CustomSelectCondition.IsNotEqualTo;
+                        break;
+                }
+
+                FilterValue = constant.Value;
             }
-
-            StateHasChanged();
-        }
-
-        public enum CustomSelectCondition
-        {
-            [LocalizedDescription("CustomSelectConditionIsEqualTo", typeof(Localization.Localization))]
-            IsEqualTo,
-
-            [LocalizedDescription("CustomSelectConditionIsNotEqualTo", typeof(Localization.Localization))]
-            IsNotEqualTo,
-
-            [LocalizedDescription("CustomSelectConditionIsNull", typeof(Localization.Localization))]
-            IsNull,
-
-            [LocalizedDescription("CustomSelectConditionIsNotNull", typeof(Localization.Localization))]
-            IsNotNull
         }
     }
 }

@@ -1,6 +1,6 @@
-namespace SchneiderHolzApi.Authorization;
-
 using SchneiderHolzApi.Services;
+
+namespace SchneiderHolzApi.Authorization;
 
 public class JwtMiddleware
 {
@@ -16,10 +16,8 @@ public class JwtMiddleware
         var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
         var userId = jwtUtils.ValidateToken(token);
         if (userId != null)
-        {
             // attach user to context on successful jwt validation
             context.Items["User"] = userService.GetById(userId.Value);
-        }
 
         await _next(context);
     }

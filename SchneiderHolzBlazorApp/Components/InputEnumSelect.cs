@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Reflection;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Rendering;
 
@@ -18,7 +17,7 @@ public sealed class InputEnumSelect<TEnum> : InputBase<TEnum>
         builder.AddAttribute(3, "value", BindConverter.FormatValue(CurrentValueAsString));
         builder.AddAttribute(4, "onchange",
             EventCallback.Factory.CreateBinder<string>(this, value => CurrentValueAsString = value,
-                CurrentValueAsString, null));
+                CurrentValueAsString));
 
         // Add an option element per enum value
         var enumType = GetEnumType();

@@ -1,22 +1,21 @@
 ﻿using SchneiderHolzBlazorApp.Pages.TransportOrderFeature.Components;
+
 namespace SchneiderHolzBlazorApp.Pages.TransportOrderFeature;
 
 public partial class TranportOrderPage
 {
-    [Inject] private HttpClient httpClient { get; set; } = new();
     private List<TransportOrder> data = new();
 
     public TransportOrder SelectedItem = new();
     public List<TransportOrder> SelectedItems = new();
     public ITable<TransportOrder> Table;
+    [Inject] private HttpClient httpClient { get; set; } = new();
 
 
     protected override async Task OnInitializedAsync()
     {
-
-        data = await httpClient.GetFromJsonAsync<List<TransportOrder>>($"{httpClient.BaseAddress}/TransportOrders") ?? new();
-
-
+        data = await httpClient.GetFromJsonAsync<List<TransportOrder>>($"{httpClient.BaseAddress}/TransportOrders") ??
+               new List<TransportOrder>();
     }
 
     private async Task Delete(TransportOrder select)
@@ -28,16 +27,12 @@ public partial class TranportOrderPage
 
         if (!result.Cancelled)
         {
-
         }
     }
 
 
     public async Task StorePackage()
     {
-
-       
-
         if (string.IsNullOrEmpty(SelectedItem.PackageNumber))
         {
             toastService.ShowWarning("No package selected.");
@@ -63,8 +58,10 @@ public partial class TranportOrderPage
         else if (result.Cancelled)
         {
         }
+
         StateHasChanged();
     }
+
     public async Task OutsourcePackage()
     {
         if (string.IsNullOrEmpty(SelectedItem.PackageNumber))
@@ -92,6 +89,7 @@ public partial class TranportOrderPage
         else if (result.Cancelled)
         {
         }
+
         StateHasChanged();
     }
 
@@ -122,6 +120,7 @@ public partial class TranportOrderPage
         else if (result.Cancelled)
         {
         }
+
         StateHasChanged();
     }
 
@@ -129,15 +128,13 @@ public partial class TranportOrderPage
     public async Task ShowModalEdit(TransportOrder select)
     {
         if (select == null)
-        {
             select = new TransportOrder();
-            //select.Id = data.Count == 0 ? 1 : data.OrderByDescending(id => id.Id).First().Id + 1;
-        }
+        //select.Id = data.Count == 0 ? 1 : data.OrderByDescending(id => id.Id).First().Id + 1;
 
         var parameters = new ModalParameters();
         parameters.Add(nameof(TransportOrderDetail.SelectedItem), select);
         var messageForm = Modal.Show<TransportOrderDetail>(
-            $@"TransportOrderDetails",
+            @"TransportOrderDetails",
             parameters, new ModalOptions { Class = EditModalClass });
 
         var result = await messageForm.Result;
@@ -153,14 +150,13 @@ public partial class TranportOrderPage
         else if (result.Cancelled)
         {
         }
+
         StateHasChanged();
     }
 
 
-
     private void ToggleEdit()
     {
-
         var resttest = SelectedItem.ToString();
 
         Table.ToggleEditMode();
@@ -169,12 +165,7 @@ public partial class TranportOrderPage
     public async Task Save()
     {
         foreach (var item in data)
-        {
-            await httpClient.PutAsJsonAsync($"{httpClient.BaseAddress}/TransportOrders/" + Convert.ToInt32(item.Id), item);
-        }
+            await httpClient.PutAsJsonAsync($"{httpClient.BaseAddress}/TransportOrders/" + Convert.ToInt32(item.Id),
+                item);
     }
-
-
-
-
 }

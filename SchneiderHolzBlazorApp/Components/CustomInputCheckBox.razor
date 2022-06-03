@@ -8,7 +8,8 @@
 		<LabelLocalizeable CssClass="@(LabelCssClass != null ? LabelCssClass : "form-check-label")" TranslateKey="@Label"/>
 	}
 	<InputCheckbox class="@(InputCssClass != null ? InputCssClass : "form-check-input")" @attributes="AdditionalAttributes" id="@Label" @bind-Value="CurrentValue"/>
-	@if(ValidationFor is not null) {
+	@if (ValidationFor is not null)
+	{
 		<ValidationMessage For="@ValidationFor"/>
 	}
 </div>
@@ -30,11 +31,9 @@
 	[Parameter]
 	public string InputContainerCssClass { get; set; }
 
-	 protected override async Task OnInitializedAsync()
-    {
-
-
-    }
+	protected override async Task OnInitializedAsync()
+	{
+	}
 
 	protected override bool TryParseValueFromString(string value, out bool result, out string validationErrorMessage)
 	{

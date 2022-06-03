@@ -1,7 +1,7 @@
-namespace SchneiderHolzApi.Helpers;
-
 using System.Net;
 using System.Text.Json;
+
+namespace SchneiderHolzApi.Helpers;
 
 public class ErrorHandlerMiddleware
 {

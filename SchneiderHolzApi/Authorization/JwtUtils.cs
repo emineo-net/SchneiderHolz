@@ -1,12 +1,12 @@
-namespace SchneiderHolzApi.Authorization;
-
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SchneiderHolzApi.Entities;
 using SchneiderHolzApi.Helpers;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+
+namespace SchneiderHolzApi.Authorization;
 
 public interface IJwtUtils
 {
@@ -32,7 +32,8 @@ public class JwtUtils : IJwtUtils
         {
             Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
             Expires = DateTime.UtcNow.AddDays(7),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            SigningCredentials =
+                new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
@@ -55,7 +56,7 @@ public class JwtUtils : IJwtUtils
                 ValidateAudience = false,
                 // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
                 ClockSkew = TimeSpan.Zero
-            }, out SecurityToken validatedToken);
+            }, out var validatedToken);
 
             var jwtToken = (JwtSecurityToken)validatedToken;
             var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);

@@ -36,7 +36,7 @@
 		var i = Items.FirstOrDefault(i => i.Value == key);
 		if (i != null)
 		{
-			i.Selected = (bool) e.Value;
+			i.Selected = (bool)e.Value;
 			await OnCheckChange.InvokeAsync(Items);
 		}
 		Buttontext = string.Join(",", Items.Where(i => i.Selected).Select(n => n.Text).ToList());

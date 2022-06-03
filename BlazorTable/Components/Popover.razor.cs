@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace BlazorTable
 {
@@ -11,8 +11,7 @@ namespace BlazorTable
         [Parameter(CaptureUnmatchedValues = true)]
         public IReadOnlyDictionary<string, object> UnknownParameters { get; set; }
 
-        [Parameter]
-        public EventCallback<bool> IsOpenChanged { get; set; }
+        [Parameter] public EventCallback<bool> IsOpenChanged { get; set; }
 
         [Parameter]
         public bool? IsOpen
@@ -28,29 +27,32 @@ namespace BlazorTable
                         Changed(value ?? false);
                         StateHasChanged();
                     }
+
                     _isOpen = value ?? false;
                 }
             }
         }
 
-        [Parameter]
-        public Placement Placement { get; set; } = Placement.Auto;
+        [Parameter] public Placement Placement { get; set; } = Placement.Auto;
 
-        [Parameter]
-        public ElementReference Reference { get; set; }
+        [Parameter] public ElementReference Reference { get; set; }
 
-        [Parameter]
-        public RenderFragment ChildContent { get; set; }
+        [Parameter] public RenderFragment ChildContent { get; set; }
 
-        [Parameter]
-        public bool DismissOnNextClick { get; set; } = true;
+        [Parameter] public bool DismissOnNextClick { get; set; } = true;
 
-        [Inject]
-        protected IJSRuntime JSRuntime { get; set; }
+        [Inject] protected IJSRuntime JSRuntime { get; set; }
 
         public bool Manual { get; set; }
 
         private bool _isOpen { get; set; }
+
+        protected string Classname =>
+            $"popover bs-popover-{Placement.ToDescriptionString()} {(IsOpen == true ? "show" : string.Empty)}";
+
+        protected ElementReference MyRef { get; set; }
+
+        protected ElementReference Arrow { get; set; }
 
         protected virtual Task Changed(bool e)
         {
@@ -64,12 +66,6 @@ namespace BlazorTable
             IsOpenChanged.InvokeAsync(false);
         }
 
-        protected string Classname => $"popover bs-popover-{Placement.ToDescriptionString()} {(IsOpen == true ? "show" : string.Empty)}";
-
-        protected ElementReference MyRef { get; set; }
-
-        protected ElementReference Arrow { get; set; }
-
         protected override void OnAfterRender(bool firstRender)
         {
             if (IsOpen ?? false)
@@ -81,58 +77,40 @@ namespace BlazorTable
 
         protected void OnClick()
         {
-            if (DismissOnNextClick)
-            {
-                Hide();
-            }
+            if (DismissOnNextClick) Hide();
         }
     }
 
     public enum Placement
     {
-        [Description("auto")]
-        Auto,
+        [Description("auto")] Auto,
 
-        [Description("auto-start")]
-        AutoStart,
+        [Description("auto-start")] AutoStart,
 
-        [Description("auto-end")]
-        AutoEnd,
+        [Description("auto-end")] AutoEnd,
 
-        [Description("top")]
-        Top,
+        [Description("top")] Top,
 
-        [Description("top-start")]
-        TopStart,
+        [Description("top-start")] TopStart,
 
-        [Description("top-end")]
-        TopEnd,
+        [Description("top-end")] TopEnd,
 
-        [Description("right")]
-        Right,
+        [Description("right")] Right,
 
-        [Description("right-start")]
-        RightStart,
+        [Description("right-start")] RightStart,
 
-        [Description("right-end")]
-        EightEnd,
+        [Description("right-end")] EightEnd,
 
-        [Description("bottom")]
-        Bottom,
+        [Description("bottom")] Bottom,
 
-        [Description("bottom-start")]
-        BottomStart,
+        [Description("bottom-start")] BottomStart,
 
-        [Description("bottom-end")]
-        BottomEnd,
+        [Description("bottom-end")] BottomEnd,
 
-        [Description("left")]
-        Left,
+        [Description("left")] Left,
 
-        [Description("left-start")]
-        LeftStart,
+        [Description("left-start")] LeftStart,
 
-        [Description("left-end")]
-        LeftEnd
+        [Description("left-end")] LeftEnd
     }
 }

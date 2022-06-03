@@ -1,5 +1,4 @@
-﻿using LinqKit;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -12,7 +11,7 @@ namespace BlazorTable
     internal static class Utilities
     {
         /// <summary>
-        /// Calculates Sum or Average of a column base on given field name.
+        ///     Calculates Sum or Average of a column base on given field name.
         /// </summary>
         /// <param name="source"></param>
         /// <param name="member"></param>
@@ -28,14 +27,15 @@ namespace BlazorTable
             // lambda from the string in order to pass it to the sum method.
 
             // Lets create a ((TSource s) => s.Price ). First up, the parameter "s":
-            ParameterExpression parameter = Expression.Parameter(source.ElementType, "s");
+            var parameter = Expression.Parameter(source.ElementType, "s");
 
             // Followed by accessing the Price property of "s" (s.Price):
-            PropertyInfo property = source.ElementType.GetProperty(member, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+            var property = source.ElementType.GetProperty(member,
+                BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
 
             if (property == null) return source;
 
-            MemberExpression getter = Expression.MakeMemberAccess(parameter, property);
+            var getter = Expression.MakeMemberAccess(parameter, property);
 
             // And finally, we create a lambda from that. First specifying on what
             // to execute when the lambda is called, and finally the parameters of the lambda.
@@ -46,7 +46,7 @@ namespace BlazorTable
                 // There are a lot of Queryable.Sum() overloads with different
                 // return types  (double, int, decimal, double?, int?, etc...).
                 // We're going to find one that matches the type of our property.
-                MethodInfo aggregateMethod = typeof(Queryable).GetMethods().First(
+                var aggregateMethod = typeof(Queryable).GetMethods().First(
                     m => m.Name == aggregateType.ToString()
                          && m.ReturnType == property.PropertyType
                          && m.IsGenericMethod);
@@ -55,7 +55,7 @@ namespace BlazorTable
                 // Note that the Queryable.Sum<TSource>(source, selector) has a generic type,
                 // which we haven't resolved yet. Good thing is that we can use copy the one from
                 // our initial source expression.
-                var genericAggregateMethod = aggregateMethod.MakeGenericMethod(new[] { source.ElementType });
+                var genericAggregateMethod = aggregateMethod.MakeGenericMethod(source.ElementType);
 
                 // TSource, source and selector are now all resolved. We now know how to call
                 // the sum-method. We're not going to call it here, we just express how we're going
@@ -72,7 +72,8 @@ namespace BlazorTable
             }
             catch (Exception)
             {
-                throw new InvalidOperationException($"The {aggregateType} aggregation cannot be used for {member} field. The {member} field must be in numeric data type to perform this operation.");
+                throw new InvalidOperationException(
+                    $"The {aggregateType} aggregation cannot be used for {member} field. The {member} field must be in numeric data type to perform this operation.");
             }
         }
 
@@ -104,9 +105,7 @@ namespace BlazorTable
                     return true;
                 case TypeCode.Object:
                     if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
-                    {
                         return Nullable.GetUnderlyingType(type).IsNumeric();
-                    }
                     return false;
                 default:
                     return false;
@@ -122,23 +121,19 @@ namespace BlazorTable
         {
             if (e is Enum)
             {
-                Type type = e.GetType();
-                Array values = Enum.GetValues(type);
+                var type = e.GetType();
+                var values = Enum.GetValues(type);
 
                 foreach (int val in values)
-                {
                     if (val == e.ToInt32(CultureInfo.InvariantCulture))
                     {
                         var memInfo = type.GetMember(type.GetEnumName(val));
 
                         if (memInfo[0]
-                            .GetCustomAttributes(typeof(DescriptionAttribute), false)
-                            .FirstOrDefault() is DescriptionAttribute descriptionAttribute)
-                        {
+                                .GetCustomAttributes(typeof(DescriptionAttribute), false)
+                                .FirstOrDefault() is DescriptionAttribute descriptionAttribute)
                             return descriptionAttribute.Description;
-                        }
                     }
-                }
             }
 
             return null; // could also return string.Empty
@@ -155,20 +150,18 @@ namespace BlazorTable
                 case MemberTypes.Event:
                     return ((EventInfo)member).EventHandlerType;
                 default:
-                    throw new ArgumentException("MemberInfo must be if type FieldInfo, PropertyInfo or EventInfo", nameof(member));
+                    throw new ArgumentException("MemberInfo must be if type FieldInfo, PropertyInfo or EventInfo",
+                        nameof(member));
             }
         }
 
         public static MemberInfo GetPropertyMemberInfo<T>(this Expression<Func<T, object>> expression)
         {
-            if (expression == null)
-            {
-                return null;
-            }
+            if (expression == null) return null;
 
             if (!(expression.Body is MemberExpression body))
             {
-                UnaryExpression ubody = (UnaryExpression)expression.Body;
+                var ubody = (UnaryExpression)expression.Body;
                 body = ubody.Operand as MemberExpression;
             }
 
@@ -177,12 +170,13 @@ namespace BlazorTable
 
         public static string ToDescriptionString(this Enum val)
         {
-            var attributes = (DescriptionAttribute[])val.GetType().GetField(val.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false);
+            var attributes = (DescriptionAttribute[])val.GetType().GetField(val.ToString())
+                .GetCustomAttributes(typeof(DescriptionAttribute), false);
             return attributes.Length > 0 ? attributes[0].Description : string.Empty;
         }
 
         /// <summary>
-        /// Recursively walks up the tree and adds null checks
+        ///     Recursively walks up the tree and adds null checks
         /// </summary>
         /// <param name="expression"></param>
         /// <param name="skipFinalMember"></param>
@@ -193,12 +187,9 @@ namespace BlazorTable
 
             BinaryExpression newExpression = null;
 
-            if (expression is UnaryExpression unary)
-            {
-                expression = unary.Operand;
-            }
+            if (expression is UnaryExpression unary) expression = unary.Operand;
 
-            MemberExpression temp = expression as MemberExpression;
+            var temp = expression as MemberExpression;
 
             while (temp is MemberExpression member)
             {
@@ -207,25 +198,22 @@ namespace BlazorTable
                     var nullCheck = Expression.NotEqual(temp, Expression.Constant(null));
                     parents.Push(nullCheck);
                 }
-                catch (InvalidOperationException){}
+                catch (InvalidOperationException)
+                {
+                }
 
                 temp = member.Expression as MemberExpression;
             }
 
             while (parents.Count > 0)
-            {
                 if (skipFinalMember && parents.Count == 1 && newExpression != null)
                     break;
                 else if (newExpression == null)
                     newExpression = parents.Pop();
                 else
                     newExpression = Expression.AndAlso(newExpression, parents.Pop());
-            }
 
-            if (newExpression == null)
-            {
-                return Expression.Equal(Expression.Constant(true), Expression.Constant(true));
-            }
+            if (newExpression == null) return Expression.Equal(Expression.Constant(true), Expression.Constant(true));
 
             return newExpression;
         }

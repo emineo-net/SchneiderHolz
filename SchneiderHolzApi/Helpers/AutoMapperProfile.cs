@@ -1,8 +1,8 @@
-namespace SchneiderHolzApi.Helpers;
-
 using AutoMapper;
 using SchneiderHolzApi.Entities;
 using SchneiderHolzApi.Models.Users;
+
+namespace SchneiderHolzApi.Helpers;
 
 public class AutoMapperProfile : Profile
 {
