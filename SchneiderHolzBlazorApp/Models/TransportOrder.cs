@@ -17,9 +17,4 @@ public class TransportOrder : IBaseModel
     public DateTime? DateLastChange { get; set; }
     public bool CanDelete { get; set; } = true;
 
-    public override string ToString()
-    {
-        return
-            $"PackageNumber: {PackageNumber} \nLocation: {Location}  \nPosition: {Position}  \nType: {Type} \nTarget: {Target}  \nStatus: {Status}  \nPriority: {Priority}  \nSource: {Source}  \nGenerated: {Generated.ToLongDateString()}  \nIgnore: {Ignore}";
-    }
 }

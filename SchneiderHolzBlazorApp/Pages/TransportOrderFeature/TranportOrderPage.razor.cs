@@ -4,8 +4,8 @@ namespace SchneiderHolzBlazorApp.Pages.TransportOrderFeature;
 
 public partial class TranportOrderPage
 {
+    private ObjectsToString objectsToString = new ObjectsToString();
     private List<TransportOrder> _data = new();
-
     public TransportOrder SelectedItem = new();
     public List<TransportOrder> SelectedItems = new();
     public ITable<TransportOrder> Table;
@@ -127,30 +127,32 @@ public partial class TranportOrderPage
 
     public async Task ShowModalEdit(TransportOrder select)
     {
-        if (select == null)
-            select = new TransportOrder();
-        //select.Id = data.Count == 0 ? 1 : data.OrderByDescending(id => id.Id).First().Id + 1;
+        var isNew = false;
 
+        if (select == null)
+        {
+            select = new TransportOrder();
+            isNew = true;
+        }
         var parameters = new ModalParameters();
         parameters.Add(nameof(TransportOrderDetail.SelectedItem), select);
-        var messageForm = Modal.Show<TransportOrderDetail>(
-            @"TransportOrderDetails",
-            parameters, new ModalOptions { Class = EditModalClass });
-
+        var messageForm = Modal.Show<TransportOrderDetail>(@"TransportOrderDetails",parameters, new ModalOptions { Class = EditModalClass });
         var result = await messageForm.Result;
         var resultObj = (TransportOrder)result.Data;
-        if (resultObj == null)
+
+        if (result.Cancelled)
+        { }
+        else if (resultObj == null)
         {
+            // TODO: log error
         }
         else if (!result.Cancelled)
         {
-            _data.Add(resultObj);
+            if (isNew)
+            {
+                _data.Add(resultObj);
+            }
         }
-
-        else if (result.Cancelled)
-        {
-        }
-
         StateHasChanged();
     }
 
