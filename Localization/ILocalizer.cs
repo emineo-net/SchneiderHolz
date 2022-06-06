@@ -5,5 +5,5 @@ public interface ILocalizer
     string this[string idx] => GetString(idx);
     string GetString(string idx);
     void SetLocale(string locale);
-    Dictionary<string, string> GetAll(string locale);
+    List<Localize> GetAll(string locale);
 }

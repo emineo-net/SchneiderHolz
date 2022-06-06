@@ -7,13 +7,14 @@ public class Localizer : ILocalizer
     private readonly ILocalizationProvider _localizationProvider;
 
 
-    private Dictionary<string, string> _data;
+    private List<Localize> _data;
     private string _loadedLocale = string.Empty;
     private string _requestetLocale = "de";
 
     public Localizer()
     {
-        _localizationProvider = new RestProvider();
+        //_localizationProvider = new RestProvider();
+        _localizationProvider = new FileProvider();
     }
 
     public Localizer(ILocalizationProvider provider)
@@ -34,14 +35,7 @@ public class Localizer : ILocalizer
             _data = _localizationProvider.GetData(name, null);
             _loadedLocale = CultureInfo.CurrentCulture.Name;
         }
-
-        if (_data.TryGetValue(idx, out var result))
-        {
-            if (result == "") result = ">>" + idx;
-            return result;
-        }
-
-        return $">>{idx}";
+        return _data.Where(i => i.Key == idx).Select(v => v.Value).FirstOrDefault() ?? $"#{idx}";
     }
 
     public void SetLocale(string locale)
@@ -50,7 +44,7 @@ public class Localizer : ILocalizer
         _data = _localizationProvider.GetData(locale, null);
     }
 
-    public Dictionary<string, string> GetAll(string locale)
+    public List<Localize> GetAll(string locale)
     {
         if (string.IsNullOrEmpty(locale))
             return null;

@@ -11,7 +11,10 @@
 
 
 <br/>
-<button class="btn btn-primary" @onclick="Save">Save</button>
+
+@Loc["täst"]
+
+<button class="btn btn-primary" @onclick="Save">@Loc["Save"]</button>
 <br/>
 <button class="btn btn-sm btn-danger" title="Toggle Edit Mode" @onclick="@(x => ToggleEdit())">Toggle Edit Mode</button>
 <br/>

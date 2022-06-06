@@ -4,19 +4,19 @@ namespace Localization;
 
 public class FileProvider : ILocalizationProvider
 {
-    public Dictionary<string, string> GetData(string locale, string sourcePath)
+    public List<Localize> GetData(string locale, string sourcePath)
     {
         try
         {
-            var file = Path.Combine(".", "wwwroot", "local", $"locale_{locale}.json");
+            var file = Path.Combine(".", "wwwroot", "local", $"locale.{locale}.json");
             var jsonCode = File.ReadAllText(file);
-            var dict = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonCode);
+            var dict = JsonSerializer.Deserialize<List<Localize>>(jsonCode);
             return dict;
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return new Dictionary<string, string>();
+            return new List<Localize>();
         }
     }
 }

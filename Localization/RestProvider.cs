@@ -4,7 +4,7 @@ public class RestProvider : ILocalizationProvider
 {
     private static string LocalizerUrl = "https://xxx.de/api/LocalizeText";
 
-    public Dictionary<string, string> GetData(string locale, string sourcePath)
+    public List<Localize> GetData(string locale, string sourcePath)
     {
         try
         {
@@ -13,11 +13,11 @@ public class RestProvider : ILocalizationProvider
             //return JsonSerializer.Deserialize<Dictionary<string, string>>(response);
 
 
-            return new Dictionary<string, string>();
+            return new List<Localize>();
         }
         catch (Exception ex)
         {
-            return new Dictionary<string, string>();
+            return new List<Localize>();
         }
     }
 }

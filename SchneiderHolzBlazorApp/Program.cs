@@ -48,6 +48,11 @@ public class Program
             app.UseHsts();
         }
 
+        var defaultLocale = builder.Configuration.GetValue<string>("Locale");
+        string[] supportedLocales = { defaultLocale, "de-DE", "en-US", "it-IT", "fr-FR" };
+        var localizeOptions = new RequestLocalizationOptions().SetDefaultCulture(defaultLocale).AddSupportedCultures(supportedLocales).AddSupportedUICultures(supportedLocales);
+        app.UseRequestLocalization(localizeOptions);
+
         app.UseHttpsRedirection();
 
         app.UseStaticFiles();
