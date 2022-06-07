@@ -9,14 +9,10 @@
 	</div>
 }
 
-
 <br/>
-
-@Loc["täst"]
-
 <button class="btn btn-primary" @onclick="Save">@Loc["Save"]</button>
 <br/>
-<button class="btn btn-sm btn-danger" title="Toggle Edit Mode" @onclick="@(x => ToggleEdit())">Toggle Edit Mode</button>
+<button class="btn btn-sm btn-danger" title="Toggle Edit Mode" @onclick="@(x => ToggleEdit())">@Loc["ToggleEditMode"]</button>
 <br/>
 
 
@@ -24,25 +20,25 @@
 {
 	<Table TableItem="TransportOrder" Items="_data" ColumnReorder="true" CssClass="@CssClassTable" @ref="Table"
 	       ShowSearchBar="true" RowClickAction="@(x => { SelectedItem = x; CssSelected = ""; StateHasChanged();})"
-	       SelectedItems="SelectedItems" SelectionType="SelectionType.Single" Header="Header">
+	       SelectedItems="SelectedItems" SelectionType="SelectionType.Single" Header="@Loc["TranportOrderHeader"]">
 
 		<ToolBar>
 			<button type="button" class="btn btn-success btn-sm" @onclick="@(async () => await StorePackage())">
-				<i class="fas fa-plus"></i> Einlagerung
+				<i class="fas fa-plus"></i> @Loc["Store"]
 			</button>
 
 			<button type="button" class="btn btn-success btn-sm" @onclick="@(async () => await OutsourcePackage())">
-				<i class="fas fa-plus"></i> Auslagerung
+				<i class="fas fa-plus"></i> @Loc["Outsource"]
 			</button>
 
 			<button type="button" class="btn btn-success btn-sm" @onclick="@(async () => await RelocatePackage())">
-				<i class="fas fa-plus"></i> Umlagerung
+				<i class="fas fa-plus"></i> @Loc["Relocation"]
 			</button>
 		</ToolBar>
 		<ColumnActions TItem="TransportOrder" OnDeleteClick="async c => await Delete(c)" OnEditClick="async c => await ShowModalEdit(c)"/>
 
 
-		<Column TableItem="TransportOrder" Title="PackageNumber" Field="@(x => x.PackageNumber)">
+		<Column TableItem="TransportOrder" Title="@Loc["PackageNumber"]" Field="@(x => x.PackageNumber)">
 			<Template>
 				@context.PackageNumber
 			</Template>
@@ -50,15 +46,7 @@
 				<input type="text" @bind-value="@context.PackageNumber" class="form-control form-control-sm"/>
 			</EditTemplate>
 		</Column>
-		<Column TableItem="TransportOrder" Title="Position" Field="@(x => x.Position)">
-			<Template>
-				@context.Position
-			</Template>
-			<EditTemplate>
-				<input type="text" @bind-value="@context.Position" class="form-control form-control-sm"/>
-			</EditTemplate>
-		</Column>
-		<Column TableItem="TransportOrder" Title="Location" Field="@(x => x.Location)">
+			<Column TableItem="TransportOrder" Title="@Loc["Location"]" Field="@(x => x.Location)">
 			<Template>
 				@context.Location
 			</Template>
@@ -66,31 +54,23 @@
 				<input type="text" @bind-value="@context.Location" class="form-control form-control-sm"/>
 			</EditTemplate>
 		</Column>
-		<Column TableItem="TransportOrder" Title="Priority" Field="@(x => x.Priority)">
+		<Column TableItem="TransportOrder" Title="@Loc["TranportOrderPosition"]" Field="@(x => x.Position)">
 			<Template>
-				@context.Priority
+				@context.Position
 			</Template>
 			<EditTemplate>
-				<input type="text" @bind-value="@context.Priority" class="form-control form-control-sm"/>
+				<input type="text" @bind-value="@context.Position" class="form-control form-control-sm"/>
 			</EditTemplate>
 		</Column>
-		<Column TableItem="TransportOrder" Title="Source" Field="@(x => x.Source)">
+		<Column TableItem="TransportOrder" Title="@Loc["TranportOrderTyp"]" Field="@(x => x.Type)">
 			<Template>
-				@context.Source
+				@context.Type
 			</Template>
 			<EditTemplate>
-				<input type="text" @bind-value="@context.Source" class="form-control form-control-sm"/>
+				<input type="text" @bind-value="@context.Type" class="form-control form-control-sm"/>
 			</EditTemplate>
 		</Column>
-		<Column TableItem="TransportOrder" Title="Status" Field="@(x => x.Status)">
-			<Template>
-				@context.Status
-			</Template>
-			<EditTemplate>
-				<input type="text" @bind-value="@context.Status" class="form-control form-control-sm"/>
-			</EditTemplate>
-		</Column>
-		<Column TableItem="TransportOrder" Title="Target" Field="@(x => x.Target)">
+		<Column TableItem="TransportOrder" Title="@Loc["Target"]" Field="@(x => x.Target)">
 			<Template>
 				@context.Target
 			</Template>
@@ -98,15 +78,31 @@
 				<input type="text" @bind-value="@context.Target" class="form-control form-control-sm"/>
 			</EditTemplate>
 		</Column>
-		<Column TableItem="TransportOrder" Title="Ignore" Field="@(x => x.Ignore)" CssClass="text-center">
+		<Column TableItem="TransportOrder" Title="@Loc["Status"]" Field="@(x => x.Status)">
 			<Template>
-				@context.Ignore
+				@context.Status
 			</Template>
 			<EditTemplate>
-				<input type="checkbox" @bind-value="@context.Ignore" class="form-check-input"/>
+				<input type="text" @bind-value="@context.Status" class="form-control form-control-sm"/>
 			</EditTemplate>
 		</Column>
-		<Column TableItem="TransportOrder" Title="Generated" Field="@(x => x.Generated)">
+		<Column TableItem="TransportOrder" Title="@Loc["Priority"]" Field="@(x => x.Priority)">
+			<Template>
+				@context.Priority
+			</Template>
+			<EditTemplate>
+				<input type="text" @bind-value="@context.Priority" class="form-control form-control-sm"/>
+			</EditTemplate>
+		</Column>
+			<Column TableItem="TransportOrder" Title="@Loc["Source"]" Field="@(x => x.Source)">
+			<Template>
+				@context.Source
+			</Template>
+			<EditTemplate>
+				<input type="text" @bind-value="@context.Source" class="form-control form-control-sm"/>
+			</EditTemplate>
+		</Column>
+		<Column TableItem="TransportOrder" Title="@Loc["Generated"]" Field="@(x => x.Generated)">
 			<Template>
 				@context.Generated.ToLongDateString()
 			</Template>
@@ -114,7 +110,13 @@
 				<input type="date" @bind-value="@context.Generated" class="form-control form-control-sm"/>
 			</EditTemplate>
 		</Column>
-
-
+		<Column TableItem="TransportOrder" Title="@Loc["Ignore"]" Field="@(x => x.Ignore)" CssClass="text-center">
+			<Template>
+				@context.Ignore
+			</Template>
+			<EditTemplate>
+				<input type="checkbox" @bind-value="@context.Ignore" class="form-check-input"/>
+			</EditTemplate>
+		</Column>
 	</Table>
 }

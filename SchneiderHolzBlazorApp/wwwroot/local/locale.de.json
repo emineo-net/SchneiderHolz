@@ -1,18 +1,66 @@
 [
   {
-    "Key": "Cancel",
-    "Value": "blubber"
-  },
-  {
-    "Key": "Welcome",
-    "Value": "Welcome"
-  },
-  {
-    "Key": "Hello",
-    "Value": "Hello"
-  },
-  {
     "Key": "Save",
     "Value": "Speichern"
+  },
+  {
+    "Key": "ToggleEditMode",
+    "Value": "Bearbeiten umschalten"
+  },
+  {
+    "Key": "TranportOrderHeader",
+    "Value": "Transportaufträge"
+  },
+  {
+    "Key": "Store",
+    "Value": "Einlagerung"
+  },
+  {
+    "Key": "Outsource",
+    "Value": "Auslagerung"
+  },
+  {
+    "Key": "Relocation",
+    "Value": "Umlagerung"
+  },
+  {
+    "Key": "PackageNumber",
+    "Value": "Paketnummer"
+  },
+  {
+    "Key": "TranportOrderTyp",
+    "Value": "Art"
+  },
+  {
+    "Key": "TranportOrderPosition",
+    "Value": "Position"
+  },
+  {
+    "Key": "Location",
+    "Value": "Ort"
+  },
+  {
+    "Key": "Priority",
+    "Value": "Priority"
+  },
+  {
+    "Key": "Source",
+    "Value": "Quelle"
+  },
+  {
+    "Key": "Status",
+    "Value": "Status"
+  },
+  {
+    "Key": "Target",
+    "Value": "Ziel"
+  },
+  {
+    "Key": "Ignore",
+    "Value": "ignorieren"
+  },
+  {
+    "Key": "Generated",
+    "Value": "Erzeugt"
   }
 ]
